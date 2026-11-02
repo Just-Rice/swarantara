@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Raga Relief · SWARANTARA</title>
+  <meta name="description" content="Tell us how you feel and listen to a raga chosen for your mood.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/favicon.svg" alt="">SWARANTARA</a>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="raga-relief.html" aria-current="page">Raga Relief</a>
+        <a href="sleep.html">Sleep Mode</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app">
+    <div class="wrap narrow">
+
+      <!-- Step 1: mood -->
+      <section id="step-mood" class="step">
+        <p class="eyebrow">Raga Relief · Step 1 of 3</p>
+        <h1>How are you feeling right now?</h1>
+        <p>Pick the one that fits best.</p>
+        <div class="mood-grid" id="mood-grid"></div>
+      </section>
+
+      <!-- Step 2: before rating and raga -->
+      <section id="step-before" class="step" hidden>
+        <p class="eyebrow">Step 2 of 3</p>
+        <h1>Overall, how do you feel?</h1>
+        <p>1 means very low and 5 means great. You'll answer again after listening.</p>
+        <div class="scale" id="scale-before" role="group" aria-label="How you feel before listening"></div>
+
+        <div class="card raga-card" id="raga-preview"></div>
+
+        <div class="field">
+          <span>Listen for</span>
+          <div class="chips" id="duration-chips" role="group" aria-label="Listening time"></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn primary" id="start-listening" disabled>Start listening</button>
+          <button class="btn ghost" id="back-to-mood">Back</button>
+        </div>
+      </section>
+
+      <!-- Step 3: listening -->
+      <section id="step-listen" class="step listen" hidden>
+        <p class="eyebrow">Now playing</p>
+        <h1 id="listen-name">Raga</h1>
+        <div class="breath" aria-hidden="true">
+          <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+          <div class="label" id="breath-label">Breathe in</div>
+        </div>
+        <p>Close your eyes if you like, and breathe slowly with the circle.</p>
+        <div class="progress" aria-hidden="true"><div id="listen-progress"></div></div>
+        <div class="time-left" id="listen-time" aria-live="off">0:00 left</div>
+        <div class="btn-row">
+          <button class="btn" id="pause-btn">Pause</button>
+          <button class="btn ghost" id="finish-btn">I'm done</button>
+        </div>
+        <p class="notice" id="drone-notice" hidden>The recording for this raga hasn't been added yet, so a placeholder tanpura drone is playing.</p>
+      </section>
+
+      <!-- Step 4: after rating -->
+      <section id="step-after" class="step" hidden>
+        <p class="eyebrow">Step 3 of 3</p>
+        <h1>How do you feel now?</h1>
+        <p>Same scale as before: 1 means very low and 5 means great.</p>
+        <div class="scale" id="scale-after" role="group" aria-label="How you feel after listening"></div>
+        <div class="btn-row">
+          <button class="btn primary" id="save-btn" disabled>See my result</button>
+        </div>
+      </section>
+
+      <!-- Step 5: result -->
+      <section id="step-result" class="step" hidden>
+        <p class="eyebrow">Your result</p>
+        <div class="result-big" id="result-big"></div>
+        <p id="result-text"></p>
+        <div class="btn-row">
+          <button class="btn primary" id="again-btn">Try another raga</button>
+          <a class="btn" href="sleep.html">Try Sleep Mode</a>
+        </div>
+      </section>
+
+      <!-- Results stored on this device -->
+      <aside class="card stats" id="stats" hidden>
+        <h3>Results on this device</h3>
+        <div class="stats-row">
+          <div><div class="stat-num" id="stat-count">0</div><div class="stat-label">sessions</div></div>
+          <div><div class="stat-num" id="stat-avg">0</div><div class="stat-label">average change</div></div>
+          <div><div class="stat-num" id="stat-better">0%</div><div class="stat-label">felt better</div></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn small" id="export-btn">Download data (CSV)</button>
+          <button class="btn small ghost" id="clear-btn">Clear data</button>
+        </div>
+        <p class="notice">Saved only in this browser. Nothing is sent anywhere, and no names are collected.</p>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>SWARANTARA</strong> · For relaxation only. This is not medical advice.</p>
+    </div>
+  </footer>
+
+  <script src="js/ragas.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/raga-relief.js"></script>
+</body>
+</html>
