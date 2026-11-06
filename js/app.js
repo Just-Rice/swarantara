@@ -12,8 +12,19 @@
 
   var SUBSCRIPT = { "1": "₁", "2": "₂", "3": "₃" };
   var TRY = [28, 15, 22, 29, 65];
-  var SA_OPTIONS = [220, 233.1, 240, 246.9, 261.6, 277.2, 293.7];
-  var saHz = 240;
+  // Pitch of Sa. The tanpura recording is in G sharp, so that is the default;
+  // other pitches shift the recording to match (small shifts sound best).
+  var SA_OPTIONS = [
+    { hz: 196.0, name: "G" },
+    { hz: 208.06, name: "G♯" },
+    { hz: 220.0, name: "A" },
+    { hz: 233.08, name: "A♯" },
+    { hz: 240.0, name: "" },
+    { hz: 246.94, name: "B" },
+    { hz: 261.63, name: "C" }
+  ];
+  var saHz = 208.06;
+  var autoTanpura = false; // true when the tanpura was started by "Play the scale"
   var current = null; // what the decoder is showing: { kind: "mela", n } or { kind: "free", query }
 
   /* ---------- small helpers ---------- */
@@ -182,6 +193,26 @@
     return ol;
   }
 
+  // A simple tanpura outline (round gourd, long neck, four strings).
+  function svgTanpura() {
+    var ns = "http://www.w3.org/2000/svg";
+    var s = document.createElementNS(ns, "svg");
+    s.setAttribute("viewBox", "0 0 24 24");
+    s.setAttribute("width", "22");
+    s.setAttribute("height", "22");
+    s.setAttribute("fill", "none");
+    s.setAttribute("stroke", "currentColor");
+    s.setAttribute("stroke-width", "1.6");
+    s.setAttribute("stroke-linecap", "round");
+    [["circle", { cx: "8", cy: "16", r: "5.5" }], ["path", { d: "M11.8 12.2 20.5 3.5" }], ["path", { d: "M19 2.5l2.5 2.5" }],
+     ["path", { d: "M6.5 17.5 18.8 5.2" }], ["path", { d: "M8 18.8 19.8 7" }]].forEach(function (d) {
+      var e = document.createElementNS(ns, d[0]);
+      Object.keys(d[1]).forEach(function (k) { e.setAttribute(k, d[1][k]); });
+      s.appendChild(e);
+    });
+    return s;
+  }
+
   function svgFlip() {
     var ns = "http://www.w3.org/2000/svg";
     var s = document.createElementNS(ns, "svg");
@@ -241,11 +272,40 @@
     if (A.supported) {
       var sel = el("select", { id: "sa-select" });
       SA_OPTIONS.forEach(function (f) {
-        var o = el("option", { value: f, text: num(Math.round(f * 10) / 10) + " Hz" });
-        if (f === saHz) o.selected = true;
+        var label = (f.name ? f.name + " · " : "") + num(Math.round(f.hz)) + " Hz";
+        if (f.hz === A.tanpura.nativeSa) label += " · " + t("res.tanpura");
+        var o = el("option", { value: f.hz, text: label });
+        if (f.hz === saHz) o.selected = true;
         sel.appendChild(o);
       });
-      sel.addEventListener("change", function () { saHz = +sel.value; });
+      sel.addEventListener("change", function () {
+        saHz = +sel.value;
+        if (A.tanpura.playing) A.tanpura.setSa(saHz);
+      });
+
+      // Tanpura: on/off and volume
+      var tpBtn = el("button", { type: "button", class: "btn toggle tp-btn", "aria-pressed": String(A.tanpura.playing && !autoTanpura) }, [
+        el("span", { class: "tp-ico", "aria-hidden": "true" }, [svgTanpura()]),
+        el("span", { text: t("res.tanpura") })
+      ]);
+      tpBtn.addEventListener("click", function () {
+        A.unlock();
+        var on = tpBtn.getAttribute("aria-pressed") !== "true";
+        tpBtn.setAttribute("aria-pressed", String(on));
+        if (on) {
+          autoTanpura = false;
+          tpBtn.classList.add("loading");
+          A.tanpura.start(saHz).then(function () { tpBtn.classList.remove("loading"); }, function () {
+            tpBtn.classList.remove("loading");
+            tpBtn.setAttribute("aria-pressed", "false");
+          });
+        } else {
+          A.tanpura.stop();
+          autoTanpura = false;
+        }
+      });
+      var vol = el("input", { type: "range", id: "tp-vol", min: "0", max: "100", step: "5", value: String(Math.round(A.tanpura.volume * 100)) });
+      vol.addEventListener("input", function () { A.tanpura.setVolume(vol.value / 100); });
       var playBtn = el("button", { type: "button", class: "btn primary play", "aria-pressed": "false" }, [
         el("span", { class: "play-ico", "aria-hidden": "true", text: "▶" }),
         el("span", { class: "play-txt", text: t("res.play") })
@@ -260,22 +320,52 @@
           playBtn.querySelector(".play-txt").textContent = t("res.play");
           clear();
         }
-        if (A.playing) { A.stop(); setIdle(); return; }
+        if (A.playing) {
+          A.stop();
+          A.tanpura.duck(false);
+          if (autoTanpura) { A.tanpura.stop(); autoTanpura = false; }
+          setIdle();
+          return;
+        }
         var keys = sc.arohana.concat(sc.avarohana);
         playBtn.setAttribute("aria-pressed", "true");
         playBtn.querySelector(".play-ico").textContent = "■";
         playBtn.querySelector(".play-txt").textContent = t("res.stop");
-        A.playSequence(keys.map(freqOf), {
-          step: 0.48, pauseAtHalf: true,
-          onNote: function (i) { clear(); if (chips[i]) chips[i].classList.add("sounding"); },
-          onEnd: setIdle
-        });
+        function go(delay) {
+          if (playBtn.getAttribute("aria-pressed") !== "true") return; // stopped while loading
+          A.tanpura.duck(true);
+          A.playSequence(keys.map(freqOf), {
+            step: 0.48, pauseAtHalf: true, delay: delay,
+            onNote: function (i) { clear(); if (chips[i]) chips[i].classList.add("sounding"); },
+            onEnd: function () {
+              A.tanpura.duck(false);
+              if (autoTanpura) {
+                // let the tanpura ring a moment, then fade it away
+                setTimeout(function () { if (autoTanpura && !A.playing) { A.tanpura.stop(2.5); autoTanpura = false; } }, 2500);
+              }
+              setIdle();
+            }
+          });
+        }
+        // The tanpura starts first (unless it is already on or the volume is 0).
+        if (!A.tanpura.playing && A.tanpura.volume > 0) {
+          autoTanpura = true;
+          A.tanpura.start(saHz).then(function () { go(1.2); }, function () { autoTanpura = false; go(0); });
+        } else {
+          go(0);
+        }
       });
       card.appendChild(el("div", { class: "audio-row" }, [
         playBtn,
         el("label", { class: "sa-label", for: "sa-select" }, [t("res.sa")]),
         sel
       ]));
+      card.appendChild(el("div", { class: "tanpura-row" }, [
+        tpBtn,
+        el("label", { class: "tp-vol-label", for: "tp-vol" }, [t("res.tanpuraVol")]),
+        vol
+      ]));
+      card.appendChild(el("p", { class: "small muted", text: t("res.tanpuraNote") }));
     }
 
     // maths: why 72
@@ -293,8 +383,13 @@
   /* ---------- showing a decode ---------- */
   function announce(text) { $("decode-status").textContent = text; }
 
-  function showMela(m, opts) {
+  function stopAll() {
     A.stop();
+    if (autoTanpura) { A.tanpura.stop(); autoTanpura = false; }
+  }
+
+  function showMela(m, opts) {
+    stopAll();
     hideSuggest();
     current = { kind: "mela", n: m.n };
     var r = K.decodeMela(m);
@@ -308,7 +403,7 @@
   }
 
   function showFree(query) {
-    A.stop();
+    stopAll();
     current = { kind: "free", query: query };
     var out = $("decode-out");
     out.textContent = "";
@@ -446,6 +541,24 @@
     else if (current && current.kind === "free") showFree(current.query);
   }
 
+  /* ---------- loading cover ---------- */
+  // Show the page once it is built and the Devanagari font is in (at most 1 s wait),
+  // so visitors never see a half-styled page. See the <style> block in index.html.
+  function reveal() {
+    var done = false;
+    function show() {
+      if (done) return;
+      done = true;
+      requestAnimationFrame(function () { document.documentElement.classList.add("ready"); });
+    }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.load('1em "Tiro Devanagari Sanskrit"', "स्वरान्तर").then(show, show);
+      setTimeout(show, 1000);
+    } else {
+      show();
+    }
+  }
+
   /* ---------- wiring ---------- */
   function init() {
     Settings.applyToPage();
@@ -486,6 +599,7 @@
     renderAllDynamic();
     // Start with an example so the page never looks empty.
     showMela(M.list[27]);
+    reveal();
 
     if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
       window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });

@@ -10,6 +10,20 @@
   <link rel="apple-touch-icon" href="assets/icon-192.png">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preload" href="assets/fonts/tiro-devanagari-sanskrit-devanagari-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    /* Loading cover: show only the background colour until the page is fully
+       built (styles, fonts, decoder). app.js adds class "ready". If anything
+       fails, the page still appears after 2.5 s. */
+    html { background: #f7ecd6; }
+    @media (prefers-color-scheme: dark) { html[data-theme="auto"] { background: #150b08; } }
+    html[data-theme="dark"] { background: #150b08; }
+    html[data-contrast="high"] { background: #fff; }
+    html[data-contrast="high"][data-theme="dark"] { background: #000; }
+    html:not(.ready) body { opacity: 0; animation: swr-show 0s 2.5s forwards; }
+    html.ready body { opacity: 1; transition: opacity .25s ease; }
+    html[data-motion="reduce"].ready body { transition: none; }
+    @keyframes swr-show { to { opacity: 1; } }
+  </style>
   <link rel="stylesheet" href="css/style.css">
   <script>
     // Apply saved settings before the page paints (avoids a flash of the wrong theme).

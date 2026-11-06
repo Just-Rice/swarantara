@@ -55,6 +55,9 @@
       "res.play": "Play the scale",
       "res.stop": "Stop",
       "res.sa": "Pitch of Sa",
+      "res.tanpura": "Tanpura",
+      "res.tanpuraVol": "Tanpura volume",
+      "res.tanpuraNote": "A recorded tanpura plays softly behind the scale and dips while the swaras sound. It is tuned to G♯; other Sa pitches shift it to match.",
       "res.tapSwara": "Tap a swara to hear it.",
 
       "math.title": "Why exactly 72?",
@@ -168,6 +171,9 @@
       "res.play": "स्वरान् वादय",
       "res.stop": "विरम",
       "res.sa": "षड्जस्य स्वरोच्चता",
+      "res.tanpura": "तानपूरा",
+      "res.tanpuraVol": "तानपूरायाः ध्वनिः",
+      "res.tanpuraNote": "स्वराणां पृष्ठतः मन्दं तानपूरा वाद्यते, स्वरवादनकाले च किञ्चित् शाम्यति। सा G♯ स्वरे मेलिता; अन्यासु षड्जोच्चतासु तदनुसारं परिवर्तते।",
       "res.tapSwara": "स्वरं श्रोतुं तं स्पृश।",
 
       "math.title": "किमर्थं द्विसप्ततिः एव?",

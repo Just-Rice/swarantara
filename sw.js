@@ -7,7 +7,7 @@
  *
  * When you change any file, bump VERSION.
  */
-var VERSION = "swarantara-v4";
+var VERSION = "swarantara-v5";
 var NETWORK_TIMEOUT_MS = 4000;
 
 // Note: no "index.html" or "404.html" here. Cloudflare Pages redirects those
@@ -25,6 +25,7 @@ var FILES = [
   "manifest.webmanifest",
   "assets/icon.svg",
   "assets/icon-192.png",
+  "assets/audio/tanpura-gs.mp3",
   "assets/fonts/tiro-devanagari-sanskrit-devanagari-400-normal.woff2",
   "assets/fonts/tiro-devanagari-sanskrit-latin-400-normal.woff2",
   "assets/fonts/tiro-devanagari-sanskrit-latin-ext-400-normal.woff2"

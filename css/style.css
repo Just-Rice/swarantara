@@ -323,6 +323,13 @@ input:focus-visible, select:focus-visible { border-color: var(--gold); }
 .audio-row .sa-label { margin: 0; font-weight: 600; }
 .audio-row select { width: auto; }
 .play-ico { font-size: .9rem; }
+.tanpura-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin: 10px 0 4px; }
+.tanpura-row .tp-vol-label { margin: 0; font-weight: 600; }
+.tanpura-row input[type="range"] { flex: 1 1 8rem; min-width: 0; max-width: 16rem; height: 44px; accent-color: var(--kumkum); }
+.btn.toggle[aria-pressed="true"] { background: var(--gold-bright); border-color: var(--gold); color: #2b140e; }
+:root[data-contrast="high"] .btn.toggle[aria-pressed="true"] { background: var(--text); color: var(--on-accent); }
+.tp-ico { display: inline-flex; }
+.btn.loading { opacity: .7; cursor: progress; }
 
 .math { margin-top: 16px; padding-top: 14px; border-top: 1.5px dashed var(--line); }
 .math h4 { color: var(--maroon); font-size: 1.1rem; }

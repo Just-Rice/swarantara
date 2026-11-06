@@ -1,6 +1,7 @@
 /*
- * SWARANTARA: plays swaras with the Web Audio API (no recordings needed).
- * A soft plucked, veena-like tone.
+ * SWARANTARA: sound.
+ * Swaras: a soft plucked, veena-like tone made with the Web Audio API.
+ * Tanpura: a recorded loop (assets/audio/tanpura-gs.mp3), shifted to the chosen Sa.
  */
 (function (root) {
   "use strict";
@@ -85,6 +86,7 @@
   /*
    * playSequence(freqs, opts)
    *   opts.step     seconds per note (default 0.5)
+   *   opts.delay    seconds to wait before the first note (default 0)
    *   opts.onNote   called with the index of the note now sounding
    *   opts.onEnd    called when finished (not called if stopped)
    */
@@ -95,7 +97,7 @@
     stop();
     playing = true;
     var step = opts.step || 0.5;
-    var t0 = c.currentTime + 0.15;
+    var t0 = c.currentTime + 0.15 + (opts.delay || 0);
     seqBus = c.createGain();
     seqBus.gain.value = 1;
     seqBus.connect(master);
@@ -120,11 +122,156 @@
     pluck(freq, c.currentTime + 0.02, 1.6);
   }
 
+  /* ---------- Tanpura (recorded loop) ---------- */
+  // The recording is a 6-cycle loop of a tanpura tuned to Sa = 208.06 Hz (G sharp).
+  // The file has 0.5 s of lead-in, then LOOP seconds of music, then XFADE seconds
+  // more, which overlap the start of the next copy so the joins are smooth.
+  var TP = { url: "assets/audio/tanpura-gs.mp3", sa: 208.06, offset: 0.5, loop: 21.755, xfade: 2.0 };
+  var TP_MAX = 0.22;      // gain at volume 100%; keeps the tanpura behind the swaras
+  var TP_DUCK = 0.55;     // level while the scale plays (55%)
+  var tpBuffer = null;
+  var tpLoading = null;
+  var tpVol = null;       // volume control (shared)
+  var tpDuck = null;      // dips while the scale plays (shared)
+  var tpRun = null;       // the loop that is playing now
+  var tpVolume = 0.5;
+
+  function tpNodes() {
+    var c = getCtx();
+    if (!tpVol) {
+      tpDuck = c.createGain();
+      tpDuck.gain.value = 1;
+      tpDuck.connect(c.destination);
+      tpVol = c.createGain();
+      tpVol.gain.value = tpVolume * TP_MAX;
+      tpVol.connect(tpDuck);
+    }
+  }
+
+  function decode(c, data) {
+    return new Promise(function (resolve, reject) {
+      var p = c.decodeAudioData(data, resolve, reject); // callback form works in older Safari too
+      if (p && p.then) p.then(resolve, reject);
+    });
+  }
+
+  function loadTanpura() {
+    var c = getCtx();
+    if (!c) return Promise.reject(new Error("no audio"));
+    if (tpBuffer) return Promise.resolve(tpBuffer);
+    if (!tpLoading) {
+      tpLoading = fetch(TP.url)
+        .then(function (r) { if (!r.ok) throw new Error("tanpura " + r.status); return r.arrayBuffer(); })
+        .then(function (data) { return decode(c, data); })
+        .then(function (buf) { tpBuffer = buf; return buf; })
+        .catch(function (e) { tpLoading = null; throw e; });
+    }
+    return tpLoading;
+  }
+
+  // Equal-power fade curves.
+  var CURVE_IN = new Float32Array(64), CURVE_OUT = new Float32Array(64);
+  for (var ci = 0; ci < 64; ci++) {
+    CURVE_IN[ci] = Math.sin((ci / 63) * Math.PI / 2);
+    CURVE_OUT[ci] = Math.cos((ci / 63) * Math.PI / 2);
+  }
+
+  function startRun(sa) {
+    var c = getCtx();
+    tpNodes();
+    var rate = sa / TP.sa;
+    var run = { rate: rate, sa: sa, bus: c.createGain(), sources: [], next: c.currentTime + 0.05, timer: null };
+    run.bus.connect(tpVol);
+    run.bus.gain.setValueAtTime(0.0001, c.currentTime);
+    run.bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 1.5); // gentle fade in
+
+    var seg = (TP.loop + TP.xfade) / rate; // real seconds each copy plays
+    var hop = TP.loop / rate;               // a new copy starts every hop seconds
+    var xf = TP.xfade / rate;
+    function schedule() {
+      // Keep about a minute scheduled, so the drone carries on even if the
+      // phone slows down timers in the background.
+      while (run.next < c.currentTime + 60) {
+        var t = run.next;
+        var src = c.createBufferSource();
+        src.buffer = tpBuffer;
+        src.playbackRate.value = rate;
+        var g = c.createGain();
+        g.gain.setValueAtTime(0, t);
+        g.gain.setValueCurveAtTime(CURVE_IN, t, xf);
+        g.gain.setValueAtTime(1, t + seg - xf);
+        g.gain.setValueCurveAtTime(CURVE_OUT, t + seg - xf, xf);
+        src.connect(g);
+        g.connect(run.bus);
+        src.start(t, TP.offset, TP.loop + TP.xfade);
+        src.stop(t + seg + 0.05);
+        src.__end = t + seg + 0.05;
+        run.sources.push(src);
+        run.next = t + hop;
+      }
+      // forget copies that have finished
+      run.sources = run.sources.filter(function (s) { return s.__end === undefined || s.__end > c.currentTime; });
+    }
+    schedule();
+    run.timer = setInterval(schedule, 5000);
+    return run;
+  }
+
+  function endRun(run, fade) {
+    if (!run || !ctx) return;
+    var now = ctx.currentTime;
+    clearInterval(run.timer);
+    try {
+      run.bus.gain.cancelScheduledValues(now);
+      run.bus.gain.setValueAtTime(Math.max(run.bus.gain.value, 0.0001), now);
+      run.bus.gain.exponentialRampToValueAtTime(0.0001, now + fade);
+    } catch (e) {}
+    run.sources.forEach(function (s) { try { s.stop(now + fade + 0.05); } catch (e) {} });
+    setTimeout(function () { try { run.bus.disconnect(); } catch (e) {} }, (fade + 0.3) * 1000);
+  }
+
+  var tanpura = {
+    // Start the drone at this Sa. Resolves when sound has started.
+    start: function (sa) {
+      return loadTanpura().then(function () {
+        if (tpRun && Math.abs(tpRun.sa - sa) < 0.01) return;
+        var old = tpRun;
+        tpRun = startRun(sa);
+        if (old) endRun(old, 1.2); // crossfade to the new pitch
+      });
+    },
+    stop: function (fade) {
+      endRun(tpRun, fade === undefined ? 1.2 : fade);
+      tpRun = null;
+      if (tpDuck) { try { tpDuck.gain.cancelScheduledValues(ctx.currentTime); tpDuck.gain.setValueAtTime(1, ctx.currentTime); } catch (e) {} }
+    },
+    setSa: function (sa) { if (tpRun) return tanpura.start(sa); return Promise.resolve(); },
+    setVolume: function (v) {
+      tpVolume = Math.max(0, Math.min(1, v));
+      if (tpVol && ctx) {
+        tpVol.gain.cancelScheduledValues(ctx.currentTime);
+        tpVol.gain.setTargetAtTime(tpVolume * TP_MAX, ctx.currentTime, 0.08);
+      }
+    },
+    get volume() { return tpVolume; },
+    // Dip a little while the scale plays, and come back afterwards.
+    duck: function (on) {
+      if (!tpDuck || !ctx) return;
+      var now = ctx.currentTime;
+      tpDuck.gain.cancelScheduledValues(now);
+      tpDuck.gain.setTargetAtTime(on ? TP_DUCK : 1, now, on ? 0.25 : 0.6);
+    },
+    get playing() { return !!tpRun; },
+    preload: function () { return loadTanpura().catch(function () {}); },
+    nativeSa: TP.sa
+  };
+
   root.Audio2 = {
     unlock: unlock,
     playSequence: playSequence,
     playOne: playOne,
     stop: stop,
+    tanpura: tanpura,
     get playing() { return playing; },
     supported: !!(window.AudioContext || window.webkitAudioContext)
   };
