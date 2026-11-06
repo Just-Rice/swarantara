@@ -570,3 +570,14 @@ h2.ornate { justify-content: center; }
 .tanpura-row { display: grid; grid-template-columns: auto minmax(0, 14rem); justify-content: center; align-items: center; gap: 10px 12px; }
 .tanpura-row .tp-btn { grid-column: 1 / -1; justify-self: center; }
 .tanpura-row input[type="range"] { width: 100%; max-width: none; }
+
+/* ================= Moving background: marigold petals and diya sparks ================= */
+:root { --petal-1: #e07a1f; --petal-2: #e9a91f; --petal-3: #c94a1a; --spark: 200, 110, 15; --spark-glow: 2; }
+@media (prefers-color-scheme: dark) { :root[data-theme="auto"] { --petal-1: #f08a2c; --petal-2: #f5c53a; --petal-3: #e2652f; --spark: 255, 200, 90; --spark-glow: 3.2; } }
+:root[data-theme="dark"] { --petal-1: #f08a2c; --petal-2: #f5c53a; --petal-3: #e2652f; --spark: 255, 200, 90; --spark-glow: 3.2; }
+#bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; display: block; }
+.masthead, .toran, main, .foot { position: relative; z-index: 1; }
+.skip { z-index: 20; }
+/* Cards let the petals show through softly; text stays on a solid-enough ground */
+.card { background: var(--paper); background: color-mix(in srgb, var(--paper) 88%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+:root[data-contrast="high"] .card { background: var(--paper); -webkit-backdrop-filter: none; backdrop-filter: none; }

@@ -7,7 +7,7 @@
  *
  * When you change any file, bump VERSION.
  */
-var VERSION = "swarantara-v8";
+var VERSION = "swarantara-v9";
 var NETWORK_TIMEOUT_MS = 4000;
 
 // Note: no "index.html" or "404.html" here. Cloudflare Pages redirects those
@@ -22,6 +22,7 @@ var FILES = [
   "js/audio.js",
   "js/settings.js",
   "js/app.js",
+  "js/background.js",
   "manifest.webmanifest",
   "assets/icon.svg",
   "assets/icon-192.png",

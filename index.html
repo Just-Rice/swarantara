@@ -43,6 +43,7 @@
 </head>
 <body>
   <a class="skip" href="#decoder" data-i18n="skip">Skip to the decoder</a>
+  <canvas id="bg" aria-hidden="true"></canvas>
 
   <header class="masthead">
     <div class="bar">
@@ -208,6 +209,7 @@
       <div class="switches">
         <label class="switch"><input type="checkbox" name="contrast" role="switch"><span data-i18n="set.contrast">High contrast</span></label>
         <label class="switch"><input type="checkbox" name="motion" role="switch"><span data-i18n="set.motion">Reduce motion</span></label>
+        <label class="switch"><input type="checkbox" name="bg" role="switch"><span data-i18n="set.bg">Moving background</span></label>
       </div>
 
       <div class="dlg-foot">
@@ -224,5 +226,6 @@
   <script src="js/audio.js"></script>
   <script src="js/settings.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/background.js"></script>
 </body>
 </html>

@@ -111,6 +111,7 @@
       "set.themeDark": "Dark",
       "set.contrast": "High contrast",
       "set.motion": "Reduce motion",
+      "set.bg": "Moving background (petals and lamp sparks)",
       "set.reset": "Reset all",
       "set.close": "Close",
 
@@ -227,6 +228,7 @@
       "set.themeDark": "अन्धकारः",
       "set.contrast": "उच्चविभेदः",
       "set.motion": "न्यूनं चलनम्",
+      "set.bg": "चलत् पृष्ठभूमिः (पुष्पदलानि दीपकणाः च)",
       "set.reset": "पूर्ववत् कुरु",
       "set.close": "पिधेहि",
 

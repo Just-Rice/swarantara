@@ -6,7 +6,7 @@
 (function (root) {
   "use strict";
   var KEY = "swarantara.settings.v1";
-  var DEFAULTS = { lang: "en", script: "dev", size: "1", theme: "auto", contrast: false, motion: false };
+  var DEFAULTS = { lang: "en", script: "dev", size: "1", theme: "auto", contrast: false, motion: false, bg: true };
   var state = load();
   var listeners = [];
 
@@ -62,6 +62,7 @@
     });
     form.querySelector('input[name="contrast"]').checked = !!state.contrast;
     form.querySelector('input[name="motion"]').checked = !!state.motion;
+    form.querySelector('input[name="bg"]').checked = state.bg !== false;
   }
 
   function open() {
