@@ -12,17 +12,7 @@
 
   var SUBSCRIPT = { "1": "₁", "2": "₂", "3": "₃" };
   var TRY = [28, 15, 22, 29, 65];
-  // Pitch of Sa. The tanpura recording is in G sharp, so that is the default;
-  // other pitches shift the recording to match (small shifts sound best).
-  var SA_OPTIONS = [
-    { hz: 196.0, name: "G" },
-    { hz: 208.06, name: "G♯" },
-    { hz: 220.0, name: "A" },
-    { hz: 233.08, name: "A♯" },
-    { hz: 240.0, name: "" },
-    { hz: 246.94, name: "B" },
-    { hz: 261.63, name: "C" }
-  ];
+  // Sa is fixed at G sharp (208.06 Hz), the pitch of the tanpura recording.
   var saHz = 208.06;
   var autoTanpura = false; // true when the tanpura was started by "Play the scale"
   var current = null; // what the decoder is showing: { kind: "mela", n } or { kind: "free", query }
@@ -270,19 +260,6 @@
 
     // audio controls
     if (A.supported) {
-      var sel = el("select", { id: "sa-select" });
-      SA_OPTIONS.forEach(function (f) {
-        var label = (f.name ? f.name + " · " : "") + num(Math.round(f.hz)) + " Hz";
-        if (f.hz === A.tanpura.nativeSa) label += " · " + t("res.tanpura");
-        var o = el("option", { value: f.hz, text: label });
-        if (f.hz === saHz) o.selected = true;
-        sel.appendChild(o);
-      });
-      sel.addEventListener("change", function () {
-        saHz = +sel.value;
-        if (A.tanpura.playing) A.tanpura.setSa(saHz);
-      });
-
       // Tanpura: on/off and volume
       var tpBtn = el("button", { type: "button", class: "btn toggle tp-btn", "aria-pressed": String(A.tanpura.playing && !autoTanpura) }, [
         el("span", { class: "tp-ico", "aria-hidden": "true" }, [svgTanpura()]),
@@ -357,8 +334,7 @@
       });
       card.appendChild(el("div", { class: "audio-row" }, [
         playBtn,
-        el("label", { class: "sa-label", for: "sa-select" }, [t("res.sa")]),
-        sel
+        el("span", { class: "sa-label", text: t("res.sa") })
       ]));
       card.appendChild(el("div", { class: "tanpura-row" }, [
         tpBtn,
