@@ -581,3 +581,19 @@ h2.ornate { justify-content: center; }
 /* Cards let the petals show through softly; text stays on a solid-enough ground */
 .card { background: var(--paper); background: color-mix(in srgb, var(--paper) 88%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 :root[data-contrast="high"] .card { background: var(--paper); -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+/* ================= Performance ================= */
+/* No blur behind cards: with a moving background it had to be recomputed every frame.
+   Cards are a touch more opaque instead, so text reads the same. */
+.card { background: var(--paper); background: color-mix(in srgb, var(--paper) 93%, transparent); -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: inset 0 0 0 5px var(--paper), inset 0 0 0 6.5px var(--line), 0 2px 8px rgba(60, 25, 10, 0.10); }
+:root[data-contrast="high"] .card { box-shadow: inset 0 0 0 5px var(--paper), inset 0 0 0 6.5px var(--line); }
+/* The background canvas is its own layer and never causes page layout or repaint */
+#bg { contain: strict; will-change: transform; }
+/* Decorations are painted once and kept apart from the rest of the page */
+.toran, .kolam, .card > .corners, .hero .mandala, .lotus-divider, .foot .tanpura-art { contain: paint; }
+/* Sections far down the page are only laid out and painted when they come near the screen */
+#chart { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+#all { content-visibility: auto; contain-intrinsic-size: auto 2400px; }
+#how { content-visibility: auto; contain-intrinsic-size: auto 700px; }
+.foot { content-visibility: auto; contain-intrinsic-size: auto 260px; }

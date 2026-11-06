@@ -7,7 +7,7 @@
  *
  * When you change any file, bump VERSION.
  */
-var VERSION = "swarantara-v9";
+var VERSION = "swarantara-v10";
 var NETWORK_TIMEOUT_MS = 4000;
 
 // Note: no "index.html" or "404.html" here. Cloudflare Pages redirects those
