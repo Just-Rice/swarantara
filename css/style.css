@@ -470,9 +470,9 @@ legend { font-weight: 700; margin-bottom: 6px; padding: 0; }
 /* A2 · toran (mango leaves and marigolds) under the header */
 .toran { position: relative; height: 30px; border-top: 1.5px solid var(--gold); }
 .toran span { position: absolute; inset: 0; -webkit-mask-repeat: repeat-x; mask-repeat: repeat-x; -webkit-mask-size: 100px 30px; mask-size: 100px 30px; -webkit-mask-position: center top; mask-position: center top; }
-.toran .t-leaves { background: var(--leaf); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Cpath d='M12 3c-6 8-5 16 0 23 5-7 6-15 0-23zM62 3c-6 8-5 16 0 23 5-7 6-15 0-23z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Cpath d='M12 3c-6 8-5 16 0 23 5-7 6-15 0-23zM62 3c-6 8-5 16 0 23 5-7 6-15 0-23z'/%3E%3C/svg%3E"); }
-.toran .t-fl1 { background: var(--marigold); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Ccircle cx='37' cy='9' r='5.5'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Ccircle cx='37' cy='9' r='5.5'/%3E%3C/svg%3E"); }
-.toran .t-fl2 { background: var(--marigold-2); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Ccircle cx='87' cy='9' r='5.5'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Ccircle cx='87' cy='9' r='5.5'/%3E%3C/svg%3E"); }
+.toran .t-leaves { background: var(--leaf); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Cpath d='M25 3c-6 8-5 16 0 23 5-7 6-15 0-23zM75 3c-6 8-5 16 0 23 5-7 6-15 0-23z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Cpath d='M25 3c-6 8-5 16 0 23 5-7 6-15 0-23zM75 3c-6 8-5 16 0 23 5-7 6-15 0-23z'/%3E%3C/svg%3E"); }
+.toran .t-fl1 { background: var(--marigold); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Ccircle cx='50' cy='9' r='5.5'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Ccircle cx='50' cy='9' r='5.5'/%3E%3C/svg%3E"); }
+.toran .t-fl2 { background: var(--marigold-2); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Ccircle cx='0' cy='9' r='5.5'/%3E%3Ccircle cx='100' cy='9' r='5.5'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Ccircle cx='0' cy='9' r='5.5'/%3E%3Ccircle cx='100' cy='9' r='5.5'/%3E%3C/svg%3E"); }
 
 /* A3 · lotus mandala behind the intro title */
 .hero { position: relative; overflow: hidden; }
@@ -533,3 +533,40 @@ legend { font-weight: 700; margin-bottom: 6px; padding: 0; }
 /* D3 · tanpura drawing in the footer */
 .foot .tanpura-art { display: block; margin: 18px auto 0; width: min(320px, 90%); height: auto; color: var(--gold); }
 .foot .tanpura-art .accent { color: var(--kumkum); }
+
+/* ================= Centred layout ================= */
+/* Header: name, tagline and the Accessibility button in one centred stack */
+.bar { flex-direction: column; justify-content: center; gap: 10px; }
+.brand { justify-content: center; }
+.masthead .tagline { margin-top: 6px; }
+
+/* Cards: centre headings, labels, text and every row of controls */
+.card { text-align: center; }
+h2.ornate { justify-content: center; }
+.card label { text-align: center; }
+.chips, .try { justify-content: center; }
+.suggest { text-align: center; }
+.stepper, .audio-row, .tanpura-row { justify-content: center; }
+.tiles, .map-row, .reverse-row { justify-content: center; }
+.maps { justify-items: center; }
+.final-num { align-items: center; }
+.kp-group h3, .half-title { text-align: center; }
+.chakra h4 { justify-content: center; }
+.raga-btn { justify-content: center; text-align: center; }
+.pillars li { text-align: center; }
+.note { text-align: center; }
+
+/* Steps: a centred column, each step joined to the next by a dotted kolam line */
+.steps .step { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; padding-bottom: 6px; }
+.steps .step::before { display: none; }
+.steps .step:not(:last-child)::after { content: ""; display: block; width: 0; height: 26px; margin-top: 10px; border-left: 3px dotted var(--line); }
+.steps .step-body { width: 100%; }
+.steps .step-body h3 { margin-top: 2px; }
+
+/* The wheel keeps its own size inside the centred result header */
+.result-head > .wheel { width: 150px; flex: none; }
+/* Play and Tanpura buttons sit on the centre line, with their labels underneath */
+.audio-row { flex-direction: column; align-items: center; }
+.tanpura-row { display: grid; grid-template-columns: auto minmax(0, 14rem); justify-content: center; align-items: center; gap: 10px 12px; }
+.tanpura-row .tp-btn { grid-column: 1 / -1; justify-self: center; }
+.tanpura-row input[type="range"] { width: 100%; max-width: none; }
