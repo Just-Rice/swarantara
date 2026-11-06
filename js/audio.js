@@ -9,6 +9,10 @@
   var timers = [];
   var droneNodes = [];
   var playing = false;
+  // Every note of a playing scale goes through this one volume control,
+  // so Stop can silence notes that are already scheduled for later.
+  var seqBus = null;
+  var seqOscs = [];
 
   function getCtx() {
     if (!ctx) {
@@ -34,14 +38,14 @@
   }
 
   // A plucked note: a few harmonics that fade at different speeds.
-  function pluck(freq, when, dur, level) {
+  function pluck(freq, when, dur, level, dest, oscList) {
     var c = getCtx();
     if (!c) return;
     var out = c.createGain();
     out.gain.setValueAtTime(0.0001, when);
     out.gain.exponentialRampToValueAtTime(level || 0.32, when + 0.012);
     out.gain.exponentialRampToValueAtTime(0.0001, when + dur);
-    out.connect(master);
+    out.connect(dest || master);
     [[1, 1, 1], [2, 0.45, 0.7], [3, 0.22, 0.5], [4, 0.12, 0.35], [5, 0.06, 0.3]].forEach(function (h) {
       var o = c.createOscillator();
       var g = c.createGain();
@@ -53,6 +57,7 @@
       g.connect(out);
       o.start(when);
       o.stop(when + dur + 0.05);
+      if (oscList) oscList.push(o);
     });
   }
 
@@ -86,10 +91,25 @@
     droneNodes = [];
   }
 
+  function stopNotes() {
+    if (!ctx || !seqBus) return;
+    var now = ctx.currentTime;
+    var bus = seqBus;
+    try {
+      bus.gain.cancelScheduledValues(now);
+      bus.gain.setValueAtTime(bus.gain.value, now);
+      bus.gain.linearRampToValueAtTime(0, now + 0.06);
+    } catch (e) {}
+    seqOscs.forEach(function (o) { try { o.stop(now + 0.08); } catch (e) {} });
+    setTimeout(function () { try { bus.disconnect(); } catch (e) {} }, 200);
+    seqBus = null;
+    seqOscs = [];
+  }
+
   function stop() {
     timers.forEach(clearTimeout);
     timers = [];
-    if (ctx) stopDrone();
+    if (ctx) { stopNotes(); stopDrone(); }
     playing = false;
   }
 
@@ -107,15 +127,20 @@
     playing = true;
     var step = opts.step || 0.5;
     var t0 = c.currentTime + 0.15;
+    seqBus = c.createGain();
+    seqBus.gain.value = 1;
+    seqBus.connect(master);
     if (opts.drone) startDrone(opts.drone);
     freqs.forEach(function (f, i) {
       var when = t0 + i * step + (i >= freqs.length / 2 && opts.pauseAtHalf ? step : 0);
-      pluck(f, when, Math.max(1.2, step * 2.4));
+      pluck(f, when, Math.max(1.2, step * 2.4), null, seqBus, seqOscs);
       timers.push(setTimeout(function () { if (opts.onNote) opts.onNote(i); }, (when - c.currentTime) * 1000));
     });
     var endAt = (t0 + freqs.length * step + (opts.pauseAtHalf ? step : 0) + 0.6 - c.currentTime) * 1000;
     timers.push(setTimeout(function () {
       stopDrone();
+      seqBus = null;
+      seqOscs = [];
       playing = false;
       if (opts.onEnd) opts.onEnd();
     }, endAt));
