@@ -266,7 +266,7 @@
         playBtn.querySelector(".play-ico").textContent = "■";
         playBtn.querySelector(".play-txt").textContent = t("res.stop");
         A.playSequence(keys.map(freqOf), {
-          step: 0.48, drone: saHz, pauseAtHalf: true,
+          step: 0.48, pauseAtHalf: true,
           onNote: function (i) { clear(); if (chips[i]) chips[i].classList.add("sounding"); },
           onEnd: setIdle
         });

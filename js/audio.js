@@ -1,13 +1,12 @@
 /*
  * SWARANTARA: plays swaras with the Web Audio API (no recordings needed).
- * A soft plucked, veena-like tone, with a quiet tanpura-style drone on Sa and Pa.
+ * A soft plucked, veena-like tone.
  */
 (function (root) {
   "use strict";
   var ctx = null;
   var master = null;
   var timers = [];
-  var droneNodes = [];
   var playing = false;
   // Every note of a playing scale goes through this one volume control,
   // so Stop can silence notes that are already scheduled for later.
@@ -61,36 +60,6 @@
     });
   }
 
-  function startDrone(sa) {
-    var c = getCtx();
-    if (!c) return;
-    [[sa / 2, 0.05], [sa * 3 / 4, 0.035], [sa, 0.03]].forEach(function (d) {
-      var o = c.createOscillator();
-      var g = c.createGain();
-      o.type = "triangle";
-      o.frequency.value = d[0];
-      g.gain.setValueAtTime(0.0001, c.currentTime);
-      g.gain.exponentialRampToValueAtTime(d[1], c.currentTime + 0.6);
-      o.connect(g);
-      g.connect(master);
-      o.start();
-      droneNodes.push({ o: o, g: g });
-    });
-  }
-
-  function stopDrone() {
-    var c = ctx;
-    droneNodes.forEach(function (n) {
-      try {
-        n.g.gain.cancelScheduledValues(c.currentTime);
-        n.g.gain.setValueAtTime(n.g.gain.value, c.currentTime);
-        n.g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.4);
-        n.o.stop(c.currentTime + 0.45);
-      } catch (e) {}
-    });
-    droneNodes = [];
-  }
-
   function stopNotes() {
     if (!ctx || !seqBus) return;
     var now = ctx.currentTime;
@@ -109,7 +78,7 @@
   function stop() {
     timers.forEach(clearTimeout);
     timers = [];
-    if (ctx) { stopNotes(); stopDrone(); }
+    if (ctx) stopNotes();
     playing = false;
   }
 
@@ -130,7 +99,6 @@
     seqBus = c.createGain();
     seqBus.gain.value = 1;
     seqBus.connect(master);
-    if (opts.drone) startDrone(opts.drone);
     freqs.forEach(function (f, i) {
       var when = t0 + i * step + (i >= freqs.length / 2 && opts.pauseAtHalf ? step : 0);
       pluck(f, when, Math.max(1.2, step * 2.4), null, seqBus, seqOscs);
@@ -138,7 +106,6 @@
     });
     var endAt = (t0 + freqs.length * step + (opts.pauseAtHalf ? step : 0) + 0.6 - c.currentTime) * 1000;
     timers.push(setTimeout(function () {
-      stopDrone();
       seqBus = null;
       seqOscs = [];
       playing = false;
