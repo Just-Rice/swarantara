@@ -90,7 +90,11 @@
     document.getElementById("reset-settings").addEventListener("click", reset);
     syncForm();
     if (window.matchMedia) {
-      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { if (state.theme === "auto") applyToPage(); });
+      var mq = matchMedia("(prefers-color-scheme: dark)");
+      var onScheme = function () { if (state.theme === "auto") applyToPage(); };
+      // Older Safari only has addListener.
+      if (mq.addEventListener) mq.addEventListener("change", onScheme);
+      else if (mq.addListener) mq.addListener(onScheme);
     }
   }
 

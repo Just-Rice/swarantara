@@ -68,6 +68,8 @@
       "rev.label": "Melakarta number (1 to 72)",
       "rev.go": "Find the raga",
       "rev.bad": "Please choose a whole number from 1 to 72.",
+      "rev.less": "One less",
+      "rev.more": "One more",
 
       "chart.title": "The Katapayadi table",
       "chart.body": "The consonants are arranged in four groups. In each group they are counted 1, 2, 3 … and the tenth letter is 0. Tap a letter.",
@@ -179,6 +181,8 @@
       "rev.label": "मेलकर्तसङ्ख्या (१ तः ७२ पर्यन्तम्)",
       "rev.go": "रागम् अन्विष्य",
       "rev.bad": "१ तः ७२ पर्यन्तं पूर्णसङ्ख्यां चिनु।",
+      "rev.less": "एकेन न्यूनम्",
+      "rev.more": "एकेन अधिकम्",
 
       "chart.title": "कटपयादिसारणी",
       "chart.body": "व्यञ्जनानि चतुर्षु वर्गेषु विन्यस्तानि। प्रत्येकस्मिन् वर्गे तानि १, २, ३ … इति गण्यन्ते, दशमं च शून्यम्। वर्णं स्पृश।",

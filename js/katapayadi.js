@@ -137,7 +137,7 @@
         p = pick(syls[k], opts.firstAt === k ? "first" : "last");
       }
       if (p.digit === undefined) { res.error = "unknown-letter"; res.badLetter = p.letter; return res; }
-      p.syllable = syls[k].text.replace(/[्]$/, "");
+      p.syllable = syls[k].text;
       p.group = p.rule === "vowel" ? null : GROUP_OF[p.letter];
       p.iast = p.rule === "vowel" ? null : IAST[p.letter];
       res.picks.push(p);

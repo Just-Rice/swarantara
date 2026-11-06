@@ -38,7 +38,7 @@
   --head-text: #fbe6b6;
   --dot: rgba(138, 93, 0, 0.12);
   --shadow: 0 1px 2px rgba(80, 30, 10, .08), 0 10px 28px rgba(80, 30, 10, .10);
-  --focus: #e0a526;
+  --focus: #8f1418;
   --font-head: "Tiro Devanagari Sanskrit", "Noto Serif Devanagari", "Noto Serif", Georgia, serif;
   --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Devanagari", sans-serif;
   --radius: 16px;
@@ -49,7 +49,7 @@
     --bg: #150b08; --paper: #22120e; --surface-2: #301b14; --text: #f8e9d3; --muted: #d2b398;
     --line: #5d3b27; --kumkum: #f0705f; --maroon: #f3b5a0; --gold: #eabb4c; --gold-bright: #f2c75c;
     --green: #86d3a8; --on-accent: #1c0b07; --hl-bg: #4d2c10; --head-bg: #2a0e0a; --head-text: #f6d58c;
-    --dot: rgba(234, 187, 76, 0.07); --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px rgba(0,0,0,.35);
+    --dot: rgba(234, 187, 76, 0.07); --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px rgba(0,0,0,.35); --focus: #f2c75c;
     color-scheme: dark;
   }
 }
@@ -57,7 +57,7 @@
   --bg: #150b08; --paper: #22120e; --surface-2: #301b14; --text: #f8e9d3; --muted: #d2b398;
   --line: #5d3b27; --kumkum: #f0705f; --maroon: #f3b5a0; --gold: #eabb4c; --gold-bright: #f2c75c;
   --green: #86d3a8; --on-accent: #1c0b07; --hl-bg: #4d2c10; --head-bg: #2a0e0a; --head-text: #f6d58c;
-  --dot: rgba(234, 187, 76, 0.07); --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px rgba(0,0,0,.35);
+  --dot: rgba(234, 187, 76, 0.07); --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px rgba(0,0,0,.35); --focus: #f2c75c;
   color-scheme: dark;
 }
 /* High contrast (light, then dark) */
@@ -115,11 +115,11 @@ button, input, select { font: inherit; color: inherit; }
   clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
 }
 .skip {
-  position: absolute; left: 12px; top: -60px; z-index: 10;
+  position: absolute; left: 12px; top: 12px; z-index: 10; transform: translateY(-200%);
   background: var(--paper); color: var(--text); padding: 10px 16px; border-radius: 10px;
   border: 2px solid var(--kumkum);
 }
-.skip:focus { top: 12px; }
+.skip:focus { transform: none; }
 
 /* ---------- Kolam ornament strip (a mask, so it takes any colour) ---------- */
 .kolam {
@@ -140,7 +140,7 @@ button, input, select { font: inherit; color: inherit; }
 }
 .bar {
   max-width: 56rem; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 12px;
 }
 .brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; text-align: left; }
 .brand img { flex: none; }
@@ -157,6 +157,7 @@ button, input, select { font: inherit; color: inherit; }
   background: transparent; color: inherit; cursor: pointer;
 }
 .icon-btn svg { flex: none; }
+.masthead :focus-visible { outline-color: var(--head-text); }
 .icon-btn:hover { background: rgba(255, 255, 255, .08); }
 .icon-btn-text { font-size: .9rem; }
 
@@ -227,7 +228,8 @@ input:focus-visible, select:focus-visible { border-color: var(--gold); }
 /* ---------- Decoder output ---------- */
 .decode-out { margin-top: 22px; }
 .decoding-for { text-align: center; margin-bottom: 8px; }
-.rname { display: inline-flex; flex-direction: column; line-height: 1.2; }
+.rname { display: inline-flex; flex-direction: column; line-height: 1.2; max-width: 100%; }
+.rname-main, .rname-sub { overflow-wrap: anywhere; }
 .rname-main { font-family: var(--font-head); }
 .rname-sub { font-size: .9rem; color: var(--muted); font-family: var(--font-head); }
 .rname.big .rname-main { font-size: 1.9rem; color: var(--maroon); }
@@ -277,7 +279,7 @@ input:focus-visible, select:focus-visible { border-color: var(--gold); }
 
 .medallion {
   display: inline-grid; place-items: center; width: 3.6rem; height: 3.6rem; border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #c8352c, var(--kumkum) 60%);
+  background: radial-gradient(circle at 35% 30%, #c8352c, #8f1418 65%);
   color: #fff3d6; font-family: var(--font-head); font-size: 1.7rem;
   box-shadow: 0 0 0 3px var(--paper), 0 0 0 5.5px var(--gold-bright);
   flex: none;
@@ -295,7 +297,8 @@ input:focus-visible, select:focus-visible { border-color: var(--gold); }
   margin-top: 10px; padding: 18px 16px; border-radius: 14px;
   background: var(--surface-2); border: 1.5px solid var(--line);
 }
-.result-head { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 14px; }
+.result-head { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; margin-bottom: 14px; }
+.result-head > div { flex: 1 1 11rem; min-width: 0; }
 .result-head p { margin: 4px 0 0; }
 .eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: .78rem; font-weight: 700; color: var(--gold); }
 :root[lang="sa"] .eyebrow { text-transform: none; letter-spacing: 0; font-family: var(--font-head); font-size: 1rem; }
@@ -313,6 +316,8 @@ input:focus-visible, select:focus-visible { border-color: var(--gold); }
 .swara .ratio { font-size: .68rem; color: var(--muted); }
 .swara.sounding { background: var(--gold-bright); border-color: var(--gold); transform: translateY(-3px) scale(1.06); }
 .swara.sounding .ratio, .swara.sounding .sw { color: #2b140e; }
+:root[data-contrast="high"] .swara.sounding { background: var(--text); border-color: var(--text); }
+:root[data-contrast="high"] .swara.sounding .ratio, :root[data-contrast="high"] .swara.sounding .sw { color: var(--on-accent); }
 
 .audio-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin: 14px 0 6px; }
 .audio-row .sa-label { margin: 0; font-weight: 600; }
@@ -351,10 +356,10 @@ input:focus-visible, select:focus-visible { border-color: var(--gold); }
 
 /* ---------- All 72 ---------- */
 .half-title { color: var(--kumkum); font-size: 1.25rem; margin-top: 18px; }
-.chakras { display: grid; grid-template-columns: 1fr; gap: 12px; }
-@media (min-width: 600px) { .chakras { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 900px) { .chakras { grid-template-columns: repeat(3, 1fr); } }
-.chakra { border: 1.5px solid var(--line); border-radius: 12px; padding: 10px; background: var(--bg); }
+.chakras { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+@media (min-width: 600px) { .chakras { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 900px) { .chakras { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.chakra { min-width: 0; border: 1.5px solid var(--line); border-radius: 12px; padding: 10px; background: var(--bg); }
 .chakra h4 { font-size: 1.1rem; color: var(--maroon); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
 .chakra-n {
   display: inline-grid; place-items: center; width: 1.8em; height: 1.8em; border-radius: 50%;
@@ -369,7 +374,7 @@ input:focus-visible, select:focus-visible { border-color: var(--gold); }
 }
 .raga-btn:hover { background: var(--surface-2); border-color: var(--line); }
 .raga-n { flex: none; width: 2em; text-align: right; font-weight: 700; color: var(--kumkum); }
-.raga-name { font-family: var(--font-head); font-size: 1.05rem; overflow-wrap: break-word; min-width: 0; }
+.raga-name { font-family: var(--font-head); font-size: 1.05rem; overflow-wrap: anywhere; min-width: 0; }
 
 /* ---------- Computational thinking ---------- */
 .pillars { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }

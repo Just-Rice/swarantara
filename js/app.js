@@ -144,7 +144,7 @@
 
     // 1. all syllables
     var syl = el("div", { class: "tiles" });
-    r.syllables.forEach(function (s, i) { syl.appendChild(tile(s.text.replace(/्$/, "्"), i < 2 ? "hl" : "")); });
+    r.syllables.forEach(function (s, i) { syl.appendChild(tile(s.text, i < 2 ? "hl" : "")); });
     ol.appendChild(stepItem(0, t("step.1"), t("step.1b"), syl));
 
     // 2. first two
@@ -209,7 +209,7 @@
         el("p", { class: "eyebrow", text: t("res.mela") + " " + num(m.n) }),
         nameEl(m, "big"),
         el("p", { class: "small", text: t("res.chakra", { c: sc.chakra + 1, name: chakraName(sc.chakra) }) + " · " + t("res.pos", { p: sc.positionInChakra }) }),
-        el("p", { class: "small muted", text: t("res.chakraWhy", { meaning: I18N.lang === "sa" ? chakra[0] : chakra[2] }) })
+        el("p", { class: "small muted", text: t("res.chakraWhy", { meaning: I18N.lang === "sa" ? chakra[0] + " = " + num(sc.chakra + 1) : chakra[2] }) })
       ])
     ]));
 
@@ -222,7 +222,7 @@
         ul.appendChild(el("li", {}, [
           el("button", {
             type: "button", class: "swara", "data-idx": i, lang: useDev() ? "sa" : "sa-Latn",
-            "aria-label": swaraFull(k),
+            "aria-label": swaraLabel(k) + " · " + swaraFull(k) + " · " + K.RATIO_TEXT[K.SWARA[k].semi],
             title: swaraFull(k) + " · " + K.RATIO_TEXT[K.SWARA[k].semi],
             onclick: function () { A.unlock(); A.playOne(freqOf(k)); }
           }, [
@@ -295,6 +295,7 @@
 
   function showMela(m, opts) {
     A.stop();
+    hideSuggest();
     current = { kind: "mela", n: m.n };
     var r = K.decodeMela(m);
     var out = $("decode-out");
@@ -321,7 +322,7 @@
     }
     out.appendChild(head);
     if (r.error === "too-short") { out.appendChild(el("p", { class: "error", text: t("dec.tooShort") })); announce(t("dec.tooShort")); return; }
-    if (r.error === "unknown-letter") { out.appendChild(el("p", { class: "error", text: t("dec.unknown", { l: r.badLetter }) })); return; }
+    if (r.error === "unknown-letter") { out.appendChild(el("p", { class: "error", text: t("dec.unknown", { l: r.badLetter }) })); announce(t("dec.unknown", { l: r.badLetter })); return; }
     out.appendChild(renderSteps(r, null));
     if (r.ok) {
       var m = M.list[r.number - 1];
@@ -337,9 +338,16 @@
   function decodeQuery(q) {
     q = String(q || "").trim();
     hideSuggest();
-    if (!q) { $("decode-out").textContent = ""; $("decode-out").appendChild(el("p", { class: "error", text: t("dec.empty") })); return; }
+    if (!q) { A.stop(); current = null; $("decode-out").textContent = ""; $("decode-out").appendChild(el("p", { class: "error", text: t("dec.empty") })); announce(t("dec.empty")); return; }
     var m = findMela(q);
     if (m) showMela(m);
+    else if (/^\d+$/.test(q)) {
+      // A number that is not 1-72
+      A.stop(); current = null;
+      $("decode-out").textContent = "";
+      $("decode-out").appendChild(el("p", { class: "error", text: t("rev.bad") }));
+      announce(t("rev.bad"));
+    }
     else showFree(q);
   }
 
@@ -468,8 +476,11 @@
     });
 
     Settings.onChange(function (k) {
-      if (k === "lang" || k === "script" || k === "all") renderAllDynamic();
-      if (k === "motion" || k === "all") { /* CSS handles motion */ }
+      if (k === "lang" || k === "script" || k === "all") {
+        renderAllDynamic();
+        var err = $("rev-error");
+        if (!err.hidden) err.textContent = t("rev.bad");
+      }
     });
 
     renderAllDynamic();

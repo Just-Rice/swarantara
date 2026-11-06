@@ -86,9 +86,9 @@
       <form id="reverse-form" novalidate>
         <label for="num-input" data-i18n="rev.label">Melakarta number (1 to 72)</label>
         <div class="stepper">
-          <button type="button" class="btn round" id="num-dec" aria-label="−1">−</button>
+          <button type="button" class="btn round" id="num-dec" data-i18n-attr="aria-label:rev.less" aria-label="One less">−</button>
           <input id="num-input" type="number" inputmode="numeric" min="1" max="72" step="1" value="28">
-          <button type="button" class="btn round" id="num-inc" aria-label="+1">+</button>
+          <button type="button" class="btn round" id="num-inc" data-i18n-attr="aria-label:rev.more" aria-label="One more">+</button>
           <button class="btn primary" type="submit" data-i18n="rev.go">Find the raga</button>
         </div>
         <p id="rev-error" class="error" role="alert" hidden></p>

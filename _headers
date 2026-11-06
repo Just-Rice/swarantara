@@ -4,14 +4,22 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
+# Always check for a newer copy (cheap: the server answers "not modified"),
+# so a new version is never mixed with old files.
+/
+  Cache-Control: no-cache
+
 /sw.js
+  Cache-Control: no-cache
+
+/css/*
+  Cache-Control: no-cache
+
+/js/*
+  Cache-Control: no-cache
+
+/manifest.webmanifest
   Cache-Control: no-cache
 
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
-
-/css/*
-  Cache-Control: public, max-age=3600
-
-/js/*
-  Cache-Control: public, max-age=3600
