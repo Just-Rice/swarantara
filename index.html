@@ -61,15 +61,19 @@
     <p class="tagline" data-i18n="brand.sub">The Katapayadi code of the 72 Melakarta ragas</p>
     <div class="kolam" aria-hidden="true"></div>
   </header>
+  <div class="toran" aria-hidden="true"><span class="t-leaves"></span><span class="t-fl1"></span><span class="t-fl2"></span></div>
 
   <main id="top">
     <section class="hero">
+      <svg class="mandala" aria-hidden="true" viewBox="0 0 300 300" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="150" cy="150" r="140"/><circle cx="150" cy="150" r="100"/><circle cx="150" cy="150" r="40"/><path d="M150 10c22 40 22 80 0 100-22-20-22-60 0-100zM150 290c-22-40-22-80 0-100 22 20 22 60 0 100zM10 150c40-22 80-22 100 0-20 22-60 22-100 0zM290 150c-40 22-80 22-100 0 20-22 60-22 100 0z"/><path d="M51 51c43 13 71 41 71 71-30 0-58-28-71-71zM249 249c-43-13-71-41-71-71 30 0 58 28 71 71zM249 51c-13 43-41 71-71 71 0-30 28-58 71-71zM51 249c13-43 41-71 71-71 0 30-28 58-71 71z"/></svg>
       <h1 data-i18n="hero.title">Every raga hides its number in its name</h1>
       <p data-i18n="hero.body">Over 300 years ago, musicologists arranged the 72 parent (Melakarta) ragas of Carnatic music in a mathematical order. Then they named each raga so that its first two syllables encode its number, using the ancient Katapayadi system. Type a raga below and watch the algorithm decode it.</p>
+      <div class="lotus-divider" aria-hidden="true"><span></span><svg width="34" height="22" viewBox="0 0 34 22" fill="currentColor"><path d="M17 1c4 5 4 12 0 18-4-6-4-13 0-18zM17 19C12 18 7 14 5 7c6 1 10 6 12 12zM17 19c5-1 10-5 12-12-6 1-10 6-12 12zM3 15c4 0 9 2 14 4-5 1-10 0-14-4zM31 15c-4 0-9 2-14 4 5 1 10 0 14-4z"/></svg><span></span></div>
     </section>
 
     <!-- 1. Decoder -->
     <section id="decoder" class="card" aria-labelledby="dec-title" tabindex="-1">
+      <span class="corners" aria-hidden="true"></span>
       <h2 id="dec-title" class="ornate" data-i18n="dec.title">Decode a raga</h2>
       <form id="decode-form" class="field-row" autocomplete="off" novalidate>
         <label for="raga-input" data-i18n="dec.label">Raga name, in English letters or Devanagari</label>
@@ -93,8 +97,11 @@
       <div id="decode-out" class="decode-out"></div>
     </section>
 
+    <div class="lotus-divider" aria-hidden="true"><span></span><svg width="34" height="22" viewBox="0 0 34 22" fill="currentColor"><path d="M17 1c4 5 4 12 0 18-4-6-4-13 0-18zM17 19C12 18 7 14 5 7c6 1 10 6 12 12zM17 19c5-1 10-5 12-12-6 1-10 6-12 12zM3 15c4 0 9 2 14 4-5 1-10 0-14-4zM31 15c-4 0-9 2-14 4 5 1 10 0 14-4z"/></svg><span></span></div>
+
     <!-- 2. Reverse lookup -->
     <section id="reverse" class="card" aria-labelledby="rev-title">
+      <span class="corners" aria-hidden="true"></span>
       <h2 id="rev-title" class="ornate" data-i18n="rev.title">From number to raga</h2>
       <p data-i18n="rev.body">Go the other way: choose a number and find the raga that carries it.</p>
       <form id="reverse-form" novalidate>
@@ -109,8 +116,11 @@
       </form>
     </section>
 
+    <div class="lotus-divider" aria-hidden="true"><span></span><svg width="34" height="22" viewBox="0 0 34 22" fill="currentColor"><path d="M17 1c4 5 4 12 0 18-4-6-4-13 0-18zM17 19C12 18 7 14 5 7c6 1 10 6 12 12zM17 19c5-1 10-5 12-12-6 1-10 6-12 12zM3 15c4 0 9 2 14 4-5 1-10 0-14-4zM31 15c-4 0-9 2-14 4 5 1 10 0 14-4z"/></svg><span></span></div>
+
     <!-- 3. The table -->
     <section id="chart" class="card" aria-labelledby="chart-title">
+      <span class="corners" aria-hidden="true"></span>
       <h2 id="chart-title" class="ornate" data-i18n="chart.title">The Katapayadi table</h2>
       <p data-i18n="chart.body">The consonants are arranged in four groups. In each group they are counted 1, 2, 3 … and the tenth letter is 0. Tap a letter.</p>
       <div id="chart-grid" class="kp-grid"></div>
@@ -118,15 +128,21 @@
       <p class="small muted" data-i18n="chart.zero">Vowels on their own (अ, आ, इ …) count as 0.</p>
     </section>
 
+    <div class="lotus-divider" aria-hidden="true"><span></span><svg width="34" height="22" viewBox="0 0 34 22" fill="currentColor"><path d="M17 1c4 5 4 12 0 18-4-6-4-13 0-18zM17 19C12 18 7 14 5 7c6 1 10 6 12 12zM17 19c5-1 10-5 12-12-6 1-10 6-12 12zM3 15c4 0 9 2 14 4-5 1-10 0-14-4zM31 15c-4 0-9 2-14 4 5 1 10 0 14-4z"/></svg><span></span></div>
+
     <!-- 4. All 72 -->
     <section id="all" class="card" aria-labelledby="all-title">
+      <span class="corners" aria-hidden="true"></span>
       <h2 id="all-title" class="ornate" data-i18n="all.title">All 72 Melakarta ragas</h2>
       <p data-i18n="all.body">12 chakras of 6 ragas each. Tap any raga to decode it.</p>
       <div id="all-grid"></div>
     </section>
 
+    <div class="lotus-divider" aria-hidden="true"><span></span><svg width="34" height="22" viewBox="0 0 34 22" fill="currentColor"><path d="M17 1c4 5 4 12 0 18-4-6-4-13 0-18zM17 19C12 18 7 14 5 7c6 1 10 6 12 12zM17 19c5-1 10-5 12-12-6 1-10 6-12 12zM3 15c4 0 9 2 14 4-5 1-10 0-14-4zM31 15c-4 0-9 2-14 4 5 1 10 0 14-4z"/></svg><span></span></div>
+
     <!-- 5. Computational thinking -->
     <section id="how" class="card" aria-labelledby="how-title">
+      <span class="corners" aria-hidden="true"></span>
       <h2 id="how-title" class="ornate" data-i18n="how.title">Computational thinking in an ancient code</h2>
       <ul class="pillars">
         <li><h3 data-i18n="how.decomp">Decomposition</h3><p data-i18n="how.decompB"></p></li>
@@ -138,6 +154,7 @@
   </main>
 
   <footer class="foot">
+    <svg class="tanpura-art" aria-hidden="true" viewBox="0 0 320 80" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M66 30c-4-14-18-22-34-20C14 12 4 26 4 42s12 30 30 31c17 1 30-8 33-21"/><path d="M18 30c6-6 16-6 22 0M14 44c4 10 18 14 28 8"/><path d="M66 32h208M66 50h208"/><path d="M274 30l14-6h22l4 6v22l-4 6h-22l-14-6z"/><path d="M290 24v-8M300 24v-8M290 58v8M300 58v8"/><circle cx="290" cy="13" r="3"/><circle cx="300" cy="13" r="3"/><circle cx="290" cy="69" r="3"/><circle cx="300" cy="69" r="3"/><path d="M26 37l-8 0M26 45l-8 0" stroke-width="2.4"/><path d="M22 36.5h260M22 39.5h260M22 42.5h260M22 45.5h260" stroke-width=".7"/><g class="accent"><path d="M118 32v18M178 32v18M236 32v18" stroke-width="1"/><circle cx="148" cy="41" r="2.5" fill="currentColor" stroke="none"/><circle cx="208" cy="41" r="2.5" fill="currentColor" stroke="none"/></g></svg>
     <div class="kolam" aria-hidden="true"></div>
     <p data-i18n="foot.made">Made for the CBSE Science Exhibition 2026–27 · Mathematical Modelling and Computational Thinking</p>
     <p class="small" data-i18n="foot.offline">Works offline once loaded.</p>

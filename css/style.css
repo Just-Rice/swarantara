@@ -460,3 +460,76 @@ legend { font-weight: 700; margin-bottom: 6px; padding: 0; }
 /* English-letter names are longer: give them more room per column. */
 :root[data-script="lat"] .chakra-list { grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); }
 @media (min-width: 600px) { :root[data-script="lat"] .chakra-list { grid-template-columns: 1fr; } }
+
+/* ================= Traditional details ================= */
+:root { --leaf: #2f6b3a; --marigold: #e0a526; --marigold-2: #d9661a; --mandala: #a3191c; --mandala-o: .08; --diya: #a3191c; --diya-ink: #fff3d6; --lit: #a3191c; --lit-ink: #fff3d6; }
+@media (prefers-color-scheme: dark) { :root[data-theme="auto"] { --leaf: #5aa865; --mandala: #f2c75c; --mandala-o: .12; } }
+:root[data-theme="dark"] { --leaf: #5aa865; --mandala: #f2c75c; --mandala-o: .12; }
+:root[data-contrast="high"] { --leaf: var(--text); --marigold: var(--text); --marigold-2: var(--text); --mandala: var(--text); --mandala-o: .06; --diya: var(--text); --diya-ink: var(--on-accent); --lit: var(--text); --lit-ink: var(--on-accent); }
+
+/* A2 · toran (mango leaves and marigolds) under the header */
+.toran { position: relative; height: 30px; border-top: 1.5px solid var(--gold); }
+.toran span { position: absolute; inset: 0; -webkit-mask-repeat: repeat-x; mask-repeat: repeat-x; -webkit-mask-size: 100px 30px; mask-size: 100px 30px; -webkit-mask-position: center top; mask-position: center top; }
+.toran .t-leaves { background: var(--leaf); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Cpath d='M12 3c-6 8-5 16 0 23 5-7 6-15 0-23zM62 3c-6 8-5 16 0 23 5-7 6-15 0-23z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Cpath d='M12 3c-6 8-5 16 0 23 5-7 6-15 0-23zM62 3c-6 8-5 16 0 23 5-7 6-15 0-23z'/%3E%3C/svg%3E"); }
+.toran .t-fl1 { background: var(--marigold); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Ccircle cx='37' cy='9' r='5.5'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Ccircle cx='37' cy='9' r='5.5'/%3E%3C/svg%3E"); }
+.toran .t-fl2 { background: var(--marigold-2); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Ccircle cx='87' cy='9' r='5.5'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Ccircle cx='87' cy='9' r='5.5'/%3E%3C/svg%3E"); }
+
+/* A3 · lotus mandala behind the intro title */
+.hero { position: relative; overflow: hidden; }
+.hero > * { position: relative; }
+.hero .mandala { position: absolute; left: 50%; top: -30px; width: min(320px, 90%); height: auto; transform: translateX(-50%); color: var(--mandala); opacity: var(--mandala-o); pointer-events: none; }
+
+/* A4 · lotus divider */
+.lotus-divider { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 6px auto; color: var(--gold-bright); }
+.hero .lotus-divider { margin-top: 16px; }
+.lotus-divider span { width: min(110px, 28vw); height: 1.5px; background: linear-gradient(90deg, transparent, currentColor); }
+.lotus-divider span:last-child { background: linear-gradient(90deg, currentColor, transparent); }
+.lotus-divider svg { flex: none; }
+
+/* B1 · gold paisley corners on cards */
+.card { position: relative; padding-top: 34px; }
+.card > .corners { position: absolute; inset: 8px; pointer-events: none; }
+.card > .corners::before, .card > .corners::after { content: ""; position: absolute; left: 0; right: 0; height: 30px; background: var(--gold-bright); }
+.card > .corners::before { top: 0; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='translate(0 0)'%3E%3Cpath d='M3 31V12A9 9 0 0 1 12 3h19' fill='none' stroke='%23000' stroke-width='1.6'/%3E%3Cpath d='M9 20c0-7 4-11 11-11-1 6-5 10-11 11z'/%3E%3Ccircle cx='22.5' cy='20.5' r='2'/%3E%3C/g%3E%3C/svg%3E") left top / 30px 30px no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='translate(34 0) scale(-1 1)'%3E%3Cpath d='M3 31V12A9 9 0 0 1 12 3h19' fill='none' stroke='%23000' stroke-width='1.6'/%3E%3Cpath d='M9 20c0-7 4-11 11-11-1 6-5 10-11 11z'/%3E%3Ccircle cx='22.5' cy='20.5' r='2'/%3E%3C/g%3E%3C/svg%3E") right top / 30px 30px no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='translate(0 0)'%3E%3Cpath d='M3 31V12A9 9 0 0 1 12 3h19' fill='none' stroke='%23000' stroke-width='1.6'/%3E%3Cpath d='M9 20c0-7 4-11 11-11-1 6-5 10-11 11z'/%3E%3Ccircle cx='22.5' cy='20.5' r='2'/%3E%3C/g%3E%3C/svg%3E") left top / 30px 30px no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='translate(34 0) scale(-1 1)'%3E%3Cpath d='M3 31V12A9 9 0 0 1 12 3h19' fill='none' stroke='%23000' stroke-width='1.6'/%3E%3Cpath d='M9 20c0-7 4-11 11-11-1 6-5 10-11 11z'/%3E%3Ccircle cx='22.5' cy='20.5' r='2'/%3E%3C/g%3E%3C/svg%3E") right top / 30px 30px no-repeat; }
+.card > .corners::after { bottom: 0; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='translate(0 34) scale(1 -1)'%3E%3Cpath d='M3 31V12A9 9 0 0 1 12 3h19' fill='none' stroke='%23000' stroke-width='1.6'/%3E%3Cpath d='M9 20c0-7 4-11 11-11-1 6-5 10-11 11z'/%3E%3Ccircle cx='22.5' cy='20.5' r='2'/%3E%3C/g%3E%3C/svg%3E") left bottom / 30px 30px no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='translate(34 34) scale(-1 -1)'%3E%3Cpath d='M3 31V12A9 9 0 0 1 12 3h19' fill='none' stroke='%23000' stroke-width='1.6'/%3E%3Cpath d='M9 20c0-7 4-11 11-11-1 6-5 10-11 11z'/%3E%3Ccircle cx='22.5' cy='20.5' r='2'/%3E%3C/g%3E%3C/svg%3E") right bottom / 30px 30px no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='translate(0 34) scale(1 -1)'%3E%3Cpath d='M3 31V12A9 9 0 0 1 12 3h19' fill='none' stroke='%23000' stroke-width='1.6'/%3E%3Cpath d='M9 20c0-7 4-11 11-11-1 6-5 10-11 11z'/%3E%3Ccircle cx='22.5' cy='20.5' r='2'/%3E%3C/g%3E%3C/svg%3E") left bottom / 30px 30px no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='translate(34 34) scale(-1 -1)'%3E%3Cpath d='M3 31V12A9 9 0 0 1 12 3h19' fill='none' stroke='%23000' stroke-width='1.6'/%3E%3Cpath d='M9 20c0-7 4-11 11-11-1 6-5 10-11 11z'/%3E%3Ccircle cx='22.5' cy='20.5' r='2'/%3E%3C/g%3E%3C/svg%3E") right bottom / 30px 30px no-repeat; }
+.card { padding-bottom: 32px; }
+@media (min-width: 720px) { .card { padding-top: 38px; } }
+
+/* B2 · step numbers in diyas */
+.step { grid-template-columns: 44px 1fr; }
+.step::before { left: 21px; top: 50px; }
+.step-num.diya { position: relative; width: 44px; height: 46px; border-radius: 0; background: none; box-shadow: none; display: block; }
+:root[data-contrast="high"] .step-num.diya { background: none; }
+.diya svg { display: block; }
+.diya .flame { fill: var(--gold-bright); }
+.diya .flame-core { fill: #fff3c4; }
+.diya .bowl { fill: var(--diya); }
+.diya .rim { stroke: var(--gold-bright); }
+.diya-n { position: absolute; left: 0; right: 0; top: 23px; text-align: center; font-family: var(--font-head); font-size: 1rem; line-height: 1; color: var(--diya-ink); }
+.step-body h3 { margin-top: 12px; }
+
+/* C1 · chakra wheel around the raga number */
+.result-head { flex-direction: column; align-items: center; text-align: center; }
+.result-head > div { flex: none; width: 100%; }
+.result-head .rname { align-items: center; }
+.wheel { position: relative; width: 150px; height: 150px; flex: none; }
+.wheel svg { position: absolute; inset: 0; }
+.wheel .seg { fill: var(--paper); stroke: var(--gold-bright); stroke-width: 1; }
+.wheel .seg.lit { fill: var(--lit); stroke-width: 1.6; }
+.wheel text { font-size: 10px; font-weight: 700; fill: var(--gold); font-family: var(--font-body); }
+.wheel text.lit { fill: var(--lit-ink); }
+.wheel .medallion { position: absolute; left: 35px; top: 35px; width: 80px; height: 80px; font-size: 2.1rem; }
+
+/* C2 · ārohaṇa climbs, avarohaṇa comes down */
+.swaras.stairs { flex-wrap: nowrap; align-items: flex-end; gap: 4px; }
+.swaras.stairs li { flex: 1 1 0; min-width: 0; display: flex; }
+.swaras.stairs .swara { width: 100%; min-width: 0; min-height: calc(3.3rem + var(--h, 0) * .5rem); padding: 4px 2px; }
+.swaras.stairs .sw { font-size: 1.15rem; }
+.swaras.stairs .ratio { font-size: .62rem; }
+:root[data-size="3"] .swaras.stairs, :root[data-size="4"] .swaras.stairs { flex-wrap: wrap; align-items: stretch; }
+:root[data-size="3"] .swaras.stairs li, :root[data-size="4"] .swaras.stairs li { flex: 0 0 auto; }
+:root[data-size="3"] .swaras.stairs .swara, :root[data-size="4"] .swaras.stairs .swara { min-width: 52px; min-height: 56px; }
+
+/* D3 · tanpura drawing in the footer */
+.foot .tanpura-art { display: block; margin: 18px auto 0; width: min(320px, 90%); height: auto; color: var(--gold); }
+.foot .tanpura-art .accent { color: var(--kumkum); }

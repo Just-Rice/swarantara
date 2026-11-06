@@ -125,7 +125,7 @@
 
   function stepItem(i, title, body, content) {
     return el("li", { class: "step", style: "--i:" + i }, [
-      el("div", { class: "step-num", "aria-hidden": "true", text: num(i + 1) }),
+      el("div", { class: "step-num diya", "aria-hidden": "true" }, [svgDiya(), el("span", { class: "diya-n", text: num(i + 1) })]),
       el("div", { class: "step-body" }, [
         el("h3", { text: title }),
         body ? el("p", { class: "muted", text: body }) : null,
@@ -183,6 +183,40 @@
     return ol;
   }
 
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function svgEl(tag, attrs, kids) {
+    var e = document.createElementNS(SVGNS, tag);
+    Object.keys(attrs || {}).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+    (kids || []).forEach(function (c) { e.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+    return e;
+  }
+
+  // Step number in a small diya (oil lamp).
+  function svgDiya() {
+    return svgEl("svg", { width: "44", height: "46", viewBox: "0 0 44 46" }, [
+      svgEl("path", { class: "flame", d: "M22 2c5 7 6 12 0 17-6-5-5-10 0-17z" }),
+      svgEl("path", { class: "flame-core", d: "M22 8c2 4 2 7 0 9-2-2-2-5 0-9z" }),
+      svgEl("path", { class: "bowl", d: "M2 22h40c-2 12-10 20-20 20S4 34 2 22z" }),
+      svgEl("path", { class: "rim", d: "M2 22h40", "stroke-width": "2" })
+    ]);
+  }
+
+  // The 12 chakras as a wheel around the raga number, with this raga's chakra lit.
+  function svgChakraWheel(lit) {
+    var cx = 75, cy = 75, R = 70, r = 52;
+    var svg = svgEl("svg", { width: "150", height: "150", viewBox: "0 0 150 150", role: "img",
+      "aria-label": t("res.chakra", { c: lit + 1, name: chakraName(lit) }) });
+    function pt(rad, deg) { var a = deg * Math.PI / 180; return (cx + rad * Math.cos(a)).toFixed(1) + " " + (cy + rad * Math.sin(a)).toFixed(1); }
+    for (var i = 0; i < 12; i++) {
+      var a0 = -90 + 30 * i + 1.5, a1 = -90 + 30 * (i + 1) - 1.5, mid = -90 + 30 * i + 15;
+      var d = "M" + pt(R, a0) + "A" + R + " " + R + " 0 0 1 " + pt(R, a1) + "L" + pt(r, a1) + "A" + r + " " + r + " 0 0 0 " + pt(r, a0) + "Z";
+      svg.appendChild(svgEl("path", { class: "seg" + (i === lit ? " lit" : ""), d: d }));
+      var p = pt((R + r) / 2, mid).split(" ");
+      svg.appendChild(svgEl("text", { x: p[0], y: p[1], "text-anchor": "middle", "dominant-baseline": "central", class: i === lit ? "lit" : "" }, [num(i + 1)]));
+    }
+    return svg;
+  }
+
   // A simple tanpura outline (round gourd, long neck, four strings).
   function svgTanpura() {
     var ns = "http://www.w3.org/2000/svg";
@@ -225,7 +259,7 @@
 
     var chakra = M.chakras[sc.chakra];
     card.appendChild(el("div", { class: "result-head" }, [
-      el("span", { class: "medallion big", text: num(m.n) }),
+      el("div", { class: "wheel" }, [svgChakraWheel(sc.chakra), el("span", { class: "medallion", text: num(m.n) })]),
       el("div", {}, [
         el("p", { class: "eyebrow", text: t("res.mela") + " " + num(m.n) }),
         nameEl(m, "big"),
@@ -236,11 +270,13 @@
 
     // swaras
     var idx = 0;
-    function row(label, keys) {
-      var ul = el("ul", { class: "swaras" });
-      keys.forEach(function (k) {
+    // Ārohaṇa chips climb like stairs, avarohaṇa chips come down.
+    function row(label, keys, descending) {
+      var ul = el("ul", { class: "swaras stairs" });
+      keys.forEach(function (k, pos) {
         var i = idx++;
-        ul.appendChild(el("li", {}, [
+        var step = descending ? keys.length - 1 - pos : pos;
+        ul.appendChild(el("li", { style: "--h:" + step }, [
           el("button", {
             type: "button", class: "swara", "data-idx": i, lang: useDev() ? "sa" : "sa-Latn",
             "aria-label": swaraLabel(k) + " · " + swaraFull(k) + " · " + K.RATIO_TEXT[K.SWARA[k].semi],
@@ -255,7 +291,7 @@
       return el("div", { class: "swara-row" }, [el("h4", { text: label }), ul]);
     }
     card.appendChild(row(t("res.aro"), sc.arohana));
-    card.appendChild(row(t("res.ava"), sc.avarohana));
+    card.appendChild(row(t("res.ava"), sc.avarohana, true));
     card.appendChild(el("p", { class: "small muted", text: t("res.tapSwara") }));
 
     // audio controls
