@@ -14,7 +14,7 @@ Visitors type a raga name (in English letters or Devanagari) and the site decode
 It also has: number → raga lookup, a tappable Katapayadi table, all 72 ragas grouped by chakra,
 the 6 × 6 × 2 = 72 derivation, and an **Accessibility** panel (English / Sanskrit, script for raga names,
 text size, light/dark, high contrast, reduce motion). A second page, `tala/`, shows how Carnatic speed levels
-(kalams) form a geometric progression, plays the correct speed and checks your tapping (its main text is English only for now). It works on phones and keeps working offline after the first visit.
+(kalams) form a geometric progression, plays the correct speed and checks your tapping. A third page, `swara/`, is a live pitch graph for singing (both pages' main text is English only for now). It works on phones and keeps working offline after the first visit.
 
 ## Files
 
@@ -32,6 +32,7 @@ text size, light/dark, high contrast, reduce motion). A second page, `tala/`, sh
 | `sw.js` | Offline support. **Change `VERSION` whenever you change any file** |
 | `tala/index.html` | Second page: **Geometric Progression in Tala** (speed levels as a geometric progression, a metronome and a tap corrector) |
 | `js/tala.js`, `css/tala.css` | The tala page's code and extra styles (it shares `style.css`, settings and the background) |
+| `swara/index.html`, `js/swara.js`, `css/swara.css` | Third page: **Swara Pitch Graph** (sing into the mic and see your pitch against the raga's swaras; needs https for the mic) |
 | `tests/katapayadi.test.mjs` | Checks all 72 ragas decode correctly: `node tests/katapayadi.test.mjs` |
 
 No build step: it is plain HTML, CSS and JavaScript. To try it on a computer:

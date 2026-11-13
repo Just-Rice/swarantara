@@ -1,0 +1,79 @@
+/* SWARANTARA: the Swara Pitch Graph page (swara/). Uses the colour tokens in style.css. */
+
+/* Graph and traffic-light colours (light, dark, high contrast) */
+:root { --grid: #e3cfa6; --gridraga: #b08a4a; --band: #1e7a46; --ok: #1e7a46; --warn: #b36b00; --bad: #c62828; --lamp-off: .2; }
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] { --grid: #3d2619; --gridraga: #8a6a3a; --band: #5fd08f; --ok: #5fd08f; --warn: #f2b33d; --bad: #ff7466; --lamp-off: .16; }
+}
+:root[data-theme="dark"] { --grid: #3d2619; --gridraga: #8a6a3a; --band: #5fd08f; --ok: #5fd08f; --warn: #f2b33d; --bad: #ff7466; --lamp-off: .16; }
+:root[data-contrast="high"] { --grid: #8c8c8c; --gridraga: #000000; --ok: #006b2d; --warn: #8a4b00; --bad: #b00000; }
+:root[data-contrast="high"][data-theme="dark"] { --grid: #777777; --gridraga: #ffffff; --ok: #6dffa6; --warn: #ffc94d; --bad: #ff7a6e; }
+@media (prefers-color-scheme: dark) {
+  :root[data-contrast="high"][data-theme="auto"] { --grid: #777777; --gridraga: #ffffff; --ok: #6dffa6; --warn: #ffc94d; --bad: #ff7a6e; }
+}
+
+.swara-page { max-width: 68rem; }
+.swara-page .card { text-align: left; }
+.swara-page h2.ornate { justify-content: flex-start; }
+
+/* ---------- Controls ---------- */
+.controls { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 13.5rem), 1fr)); gap: 14px 16px; align-items: end; }
+.card .controls label { display: flex; flex-direction: column; gap: 6px; margin: 0; font-weight: 600; font-size: .92rem; min-width: 0; text-align: left; }
+.controls label .hint { font-weight: 400; color: var(--muted); }
+.controls select, .controls input[type=number] { min-height: 46px; padding: 8px 12px; width: 100%; min-width: 0; }
+.controls select:hover, .controls input[type=number]:hover { border-color: var(--gold); }
+.controls input[type=range] { width: 100%; height: 46px; margin: 0; accent-color: var(--kumkum); }
+#tolv { color: var(--kumkum); font-variant-numeric: tabular-nums; }
+.controls .row { display: flex; gap: 8px; }
+.controls .row select { flex: 1; }
+.controls .row #oct { flex: 0 0 4.6rem; }
+.actions { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 10px; margin-top: 18px; padding-top: 16px; border-top: 1.5px dashed var(--line); }
+.actions .btn.primary { min-width: 9.5rem; }
+.btn.small { min-height: 40px; padding: 6px 14px; font-size: .9rem; }
+.msg { color: var(--kumkum); font-weight: 600; margin: 10px 0 0; }
+.msg:empty { display: none; }
+.msg:not(:empty) { background: var(--surface-2); border-left: 4px solid var(--kumkum); padding: 10px 14px; border-radius: 8px; }
+
+/* ---------- Readout ---------- */
+.swara-page .card.readout { display: flex; align-items: center; justify-content: center; gap: clamp(18px, 5vw, 44px); padding-left: 18px; padding-right: 18px; }
+.light {
+  display: flex; flex-direction: column; gap: 10px; padding: 12px 10px; border-radius: 999px;
+  background: linear-gradient(180deg, #3a1210, #1c0807);
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--gold-bright), 0 6px 16px rgba(40, 10, 5, .35);
+}
+.lamp { width: 38px; height: 38px; border-radius: 50%; opacity: var(--lamp-off); transition: opacity .12s ease, box-shadow .12s ease; }
+.lamp.r { background: radial-gradient(circle at 35% 30%, #ff9a8f, #d32f2f 60%); }
+.lamp.y { background: radial-gradient(circle at 35% 30%, #ffe08a, #f0a500 60%); }
+.lamp.g { background: radial-gradient(circle at 35% 30%, #a6f0c2, #22a35a 60%); }
+.lamp.on { opacity: 1; }
+.lamp.r.on { box-shadow: 0 0 18px 2px #ff5a4a; }
+.lamp.y.on { box-shadow: 0 0 18px 2px #ffc23a; }
+.lamp.g.on { box-shadow: 0 0 18px 2px #3fd47d; }
+.readout .big { text-align: center; min-width: 0; }
+.readout .eyebrow { display: block; margin-bottom: 4px; }
+#rCents { font-size: clamp(64px, 14vw, 112px); font-weight: 750; line-height: 1; font-variant-numeric: tabular-nums; color: var(--maroon); }
+#rVerdict { font-family: var(--font-head); font-size: clamp(20px, 4.4vw, 30px); margin-top: 8px; letter-spacing: .06em; color: var(--muted); }
+#rCents:not(.ok):not(.warn):not(.bad) { color: var(--line); font-weight: 400; }
+#rCents.ok, #rVerdict.ok { color: var(--ok); }
+#rCents.warn, #rVerdict.warn { color: var(--warn); }
+#rCents.bad, #rVerdict.bad { color: var(--bad); }
+#rVerdict.ok, #rVerdict.warn, #rVerdict.bad { font-family: var(--font-body); font-weight: 700; letter-spacing: .04em; }
+
+/* ---------- Graph ---------- */
+.graphwrap { border: 1.5px solid var(--line); border-radius: 12px; background: var(--bg); padding: 6px; }
+.graphwrap canvas { display: block; width: 100%; height: 420px; }
+.stats { margin-top: 14px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; font-size: .92rem; }
+#stats { flex: 1 1 16rem; color: var(--text); font-weight: 600; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; width: 100%; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; box-shadow: 0 0 0 2px var(--paper), 0 0 0 3px var(--line); }
+.swara-page .scale { margin: 14px 0 0; background: var(--surface-2); border-left: 4px solid var(--gold-bright); padding: 10px 14px; border-radius: 8px; font-size: .95rem; color: var(--muted); }
+.swara-page .scale b { color: var(--maroon); font-family: var(--font-head); font-weight: 400; font-size: 1.15rem; }
+.swara-page .scale:empty { display: none; }
+
+@media (max-width: 640px) {
+  .lamp { width: 28px; height: 28px; }
+  .light { gap: 8px; padding: 10px 8px; }
+  .graphwrap canvas { height: 320px; }
+  .swara-page .card { padding-left: 14px; padding-right: 14px; }
+}

@@ -15,12 +15,19 @@
       "nav.label": "Pages",
       "nav.decoder": "Katapayadi decoder",
       "nav.tala": "Tala progression",
+      "nav.swara": "Pitch graph",
 
       // The "Geometric Progression in Tala" page (tala/). Its main text is in tala/index.html and js/tala.js, English only for now.
       "tala.metaTitle": "Geometric Progression in Tala · SWARANTARA",
       "tala.sub": "Mathematics in the rhythm of Carnatic music",
       "tala.skip": "Skip to the progression",
       "tala.foot": "Built for a mathematics and music project · Geometric progressions in Carnatic tala",
+
+      // The "Swara Pitch Graph" page (swara/). Its main text is in swara/index.html and js/swara.js, English only for now.
+      "swara.metaTitle": "Swara Pitch Graph · SWARANTARA",
+      "swara.sub": "Sing into the mic. The line is your pitch; the lines across are the swaras of the raga, measured from your shruti (Sa).",
+      "swara.skip": "Skip to the pitch graph",
+      "swara.foot": "Listening happens in your browser. Nothing is recorded or sent anywhere.",
 
       "hero.title": "Every raga hides its number in its name",
       "hero.body": "Over 300 years ago, musicologists arranged the 72 parent (Melakarta) ragas of Carnatic music in a mathematical order. Then they named each raga so that its first two syllables encode its number, using the ancient Katapayadi system. Type a raga below and watch the algorithm decode it.",

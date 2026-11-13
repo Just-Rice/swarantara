@@ -7,17 +7,20 @@
  *
  * When you change any file, bump VERSION.
  */
-var VERSION = "swarantara-v11";
+var VERSION = "swarantara-v12";
 var NETWORK_TIMEOUT_MS = 4000;
 
 // Note: no "index.html" or "404.html" here. Cloudflare Pages redirects those
 // to "/" and "/404", and browsers refuse to show a redirected copy offline.
-// Pages are stored by their folder address ("./", "tala/").
+// Pages are stored by their folder address ("./", "tala/", "swara/").
 var FILES = [
   "./",
   "tala/",
   "css/tala.css",
   "js/tala.js",
+  "swara/",
+  "css/swara.css",
+  "js/swara.js",
   "css/style.css",
   "js/i18n.js",
   "js/melakarta.js",
