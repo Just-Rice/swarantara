@@ -7,13 +7,17 @@
  *
  * When you change any file, bump VERSION.
  */
-var VERSION = "swarantara-v10";
+var VERSION = "swarantara-v11";
 var NETWORK_TIMEOUT_MS = 4000;
 
 // Note: no "index.html" or "404.html" here. Cloudflare Pages redirects those
 // to "/" and "/404", and browsers refuse to show a redirected copy offline.
+// Pages are stored by their folder address ("./", "tala/").
 var FILES = [
   "./",
+  "tala/",
+  "css/tala.css",
+  "js/tala.js",
   "css/style.css",
   "js/i18n.js",
   "js/melakarta.js",
@@ -56,6 +60,14 @@ function cleanCopy(res) {
   });
 }
 
+// The address a page is stored under: its folder, without "index.html" or "?…".
+function pageKey(u) {
+  var url = new URL(u, self.location.href);
+  url.search = ""; url.hash = "";
+  url.pathname = url.pathname.replace(/index\.html$/, "");
+  return url.href;
+}
+
 self.addEventListener("fetch", function (e) {
   var req = e.request;
   if (req.method !== "GET") return;
@@ -66,15 +78,20 @@ self.addEventListener("fetch", function (e) {
   e.respondWith(
     caches.open(VERSION).then(function (cache) {
       var fromCache = function () {
-        return cache.match(req, { ignoreSearch: true }).then(function (hit) {
-          return hit || (isPage ? cache.match("./") : undefined);
+        if (!isPage) return cache.match(req, { ignoreSearch: true });
+        // A page: its own saved copy (with or without the final "/"), else the home page.
+        var key = pageKey(req.url);
+        return cache.match(key).then(function (hit) {
+          return hit || (/\/$/.test(key) ? undefined : cache.match(key + "/"));
+        }).then(function (hit) {
+          return hit || cache.match("./");
         });
       };
 
       var network = fetch(req).then(function (res) {
         if (res && res.ok && res.type === "basic") {
           return cleanCopy(res).then(function (clean) {
-            cache.put(isPage ? "./" : req, clean.clone());
+            cache.put(isPage ? pageKey(res.url || req.url) : req, clean.clone());
             return clean;
           });
         }

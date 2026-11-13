@@ -1,0 +1,69 @@
+/* SWARANTARA: the "Geometric Progression in Tala" page (tala/). Uses the colour tokens in style.css. */
+
+.tala-hero p { max-width: 40rem; }
+.tags { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.tags li {
+  padding: 4px 12px; border-radius: 999px; font-size: .88rem;
+  border: 1.5px solid var(--line); background: var(--surface-2); color: var(--muted);
+}
+.gp-rings { display: block; width: min(240px, 70%); height: auto; margin: 18px auto 0; }
+.gp-rings .orbit { fill: none; stroke: var(--line); stroke-width: 1.5; }
+.gp-rings .beat { fill: var(--kumkum); }
+.gp-rings .note { fill: var(--gold-bright); }
+
+/* Two panels side by side on wide screens, stacked on phones */
+.tala-grid { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); margin-top: 14px; text-align: left; }
+@media (min-width: 760px) { .tala-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); } }
+.tala-panel { min-width: 0; border: 1.5px solid var(--line); border-radius: 12px; padding: 16px; background: var(--bg); }
+.tala-panel h3 { color: var(--maroon); font-size: 1.2rem; text-align: center; }
+.card .tala-panel label { text-align: left; margin-top: 12px; }
+.tala-panel label:first-child { margin-top: 0; }
+.slider + .slider { margin-top: 12px; }
+.slider label { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.slider output { color: var(--kumkum); font-variant-numeric: tabular-nums; }
+.slider input[type="range"] { width: 100%; height: 40px; margin: 0; accent-color: var(--kumkum); }
+
+.facts { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px 14px; margin: 14px 0; }
+.fact { border-top: 1.5px dashed var(--line); padding-top: 6px; font-size: .88rem; color: var(--muted); }
+.fact strong { display: block; color: var(--text); font-size: 1.12rem; font-variant-numeric: tabular-nums; }
+
+.tala-panel .formula { margin: 0 0 10px; text-align: center; }
+.tala-panel .formula.small { margin-top: 10px; }
+.gp-rows { display: grid; gap: 8px; margin-bottom: 12px; }
+.gp-row { display: grid; grid-template-columns: 6.2rem minmax(0, 1fr) 3.4rem; gap: 10px; align-items: center; font-size: .95rem; }
+.gp-row b { text-align: right; font-variant-numeric: tabular-nums; color: var(--kumkum); }
+.gp-bar { height: 22px; min-width: 6px; border-radius: 6px; background: linear-gradient(90deg, var(--gold-bright), var(--marigold-2)); transition: width .35s ease; }
+:root[data-contrast="high"] .gp-bar { background: var(--text); }
+
+.play-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.cycle { display: block; width: 100%; max-width: 300px; margin: 14px auto 4px; }
+.cycle .ak { fill: var(--surface-2); stroke: var(--line); stroke-width: 1.5; transition: fill .08s; }
+.cycle .ak.sam { stroke: var(--kumkum); stroke-width: 2.5; }
+.cycle .ak.on { fill: var(--gold-bright); stroke: var(--gold); }
+.cycle .ak.sam.on { fill: var(--kumkum); }
+.cycle .hub { fill: var(--paper); stroke: var(--line); stroke-width: 1.5; transition: fill .06s; }
+.cycle .hub.on { fill: var(--hl-bg); stroke: var(--gold-bright); }
+.cycle text { fill: var(--text); text-anchor: middle; font-family: var(--font-head); }
+.cycle text.sub { fill: var(--muted); font-family: var(--font-body); }
+.tala-panel > p.small { text-align: center; }
+
+.tap-pad {
+  display: block; width: 100%; min-height: 104px; margin: 12px 0 4px; border-radius: 16px; cursor: pointer;
+  border: 2px solid var(--kumkum); background: var(--hl-bg); color: var(--maroon);
+  font-family: var(--font-head); font-size: 1.5rem;
+  touch-action: manipulation; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.tap-pad.hit { background: var(--gold-bright); color: #2b140e; }
+:root[data-contrast="high"] .tap-pad.hit { background: var(--text); color: var(--on-accent); }
+
+.meter { position: relative; height: 14px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); margin: 22px 0 6px; }
+.meter .ok { position: absolute; left: 42%; width: 16%; top: 0; bottom: 0; background: var(--green); opacity: .5; border-radius: 999px; }
+.meter i { position: absolute; top: -7px; width: 6px; height: 26px; margin-left: -3px; border-radius: 3px; background: var(--kumkum); left: 50%; transition: left .25s ease; }
+.scale { display: flex; justify-content: space-between; font-size: .78rem; color: var(--muted); }
+.verdict { font-family: var(--font-head); font-size: 1.45rem; text-align: center; margin: 12px 0 4px; min-height: 2.2rem; }
+.verdict.good { color: var(--green); }
+.verdict.bad { color: var(--kumkum); }
+#advice { text-align: center; min-height: 1.6em; }
+#reset { width: 100%; margin-bottom: 10px; }
+
+#corrector { content-visibility: auto; contain-intrinsic-size: auto 1100px; }

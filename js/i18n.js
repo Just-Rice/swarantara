@@ -12,6 +12,15 @@
       "skip": "Skip to the decoder",
       "brand.sub": "The Katapayadi code of the 72 Melakarta ragas",
       "settings.open": "Accessibility settings",
+      "nav.label": "Pages",
+      "nav.decoder": "Katapayadi decoder",
+      "nav.tala": "Tala progression",
+
+      // The "Geometric Progression in Tala" page (tala/). Its main text is in tala/index.html and js/tala.js, English only for now.
+      "tala.metaTitle": "Geometric Progression in Tala · SWARANTARA",
+      "tala.sub": "Mathematics in the rhythm of Carnatic music",
+      "tala.skip": "Skip to the progression",
+      "tala.foot": "Built for a mathematics and music project · Geometric progressions in Carnatic tala",
 
       "hero.title": "Every raga hides its number in its name",
       "hero.body": "Over 300 years ago, musicologists arranged the 72 parent (Melakarta) ragas of Carnatic music in a mathematical order. Then they named each raga so that its first two syllables encode its number, using the ancient Katapayadi system. Type a raga below and watch the algorithm decode it.",
@@ -129,6 +138,7 @@
       "skip": "विवरणं प्रति गच्छ",
       "brand.sub": "द्विसप्ततिमेलकर्तरागाणां कटपयादिसङ्केतः",
       "settings.open": "सुगमता-विकल्पाः",
+      "nav.decoder": "कटपयादि-विवरणम्",
 
       "hero.title": "प्रत्येकः रागः स्वनाम्नि स्वसङ्ख्यां गोपयति",
       "hero.body": "त्रिशताधिकवर्षेभ्यः पूर्वं सङ्गीतशास्त्रज्ञाः कर्णाटकसङ्गीतस्य द्विसप्ततिं मेलकर्तरागान् गणितक्रमेण न्यवेशयन्। ततः प्रत्येकस्य रागस्य नाम तथा अकुर्वन् यथा तस्य प्रथमे द्वे अक्षरे कटपयादिपद्धत्या तस्य सङ्ख्यां सूचयतः। अधः रागनाम लिखत, विधिः तत् कथं विवृणोति इति पश्यत।",
@@ -280,7 +290,7 @@
     setLang: function (l) {
       lang = STR[l] ? l : "en";
       document.documentElement.lang = lang;
-      document.title = t("meta.title");
+      document.title = t(document.documentElement.getAttribute("data-title-key") || "meta.title");
       apply();
     }
   };

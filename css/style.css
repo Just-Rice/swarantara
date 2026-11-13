@@ -597,3 +597,13 @@ h2.ornate { justify-content: center; }
 #all { content-visibility: auto; contain-intrinsic-size: auto 2400px; }
 #how { content-visibility: auto; contain-intrinsic-size: auto 700px; }
 .foot { content-visibility: auto; contain-intrinsic-size: auto 260px; }
+
+/* ================= Page links in the header ================= */
+.site-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 2px auto 12px; }
+.site-nav a {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 6px 14px; border-radius: 999px;
+  border: 1.5px solid rgba(251, 230, 182, .45); color: inherit; text-decoration: none; font-size: .92rem;
+}
+.site-nav a:hover { border-color: currentColor; background: rgba(255, 255, 255, .08); }
+.site-nav a[aria-current="page"] { background: var(--head-text); border-color: var(--head-text); color: var(--head-bg); font-weight: 700; }
+:root[data-contrast="high"] .site-nav a { border-color: currentColor; }
